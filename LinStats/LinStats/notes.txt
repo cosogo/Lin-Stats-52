@@ -1,0 +1,20 @@
+﻿TO DO / FIX:
+
+- The way you add stats and it auto levels you by clicking the plus button is off. If I go to level 60 and want to assign the stat point, it will automatically put me at 61
+ I'm wondering if removing the auto level when you increase a stat is the best way to go even if it makes the program more difficult to use. 
+
+
+ HP per level seems to use the following formula
+ base Hp per level (dictitated by class) + stat hp per level (dictated by stats) + starting hp per level bonuses
+	de 9
+	elf 9
+	illu 5
+	knight 16
+	mage 6
+	royal 10
+	dk 12
+
+Mage stats:
+Not sure about these formulas but it indicates that magic bonus is a totally separate stat.
+Spell Damage = Base Damage + (Magic Bonus x Level of Spell)
+spell power = magic bonus + spell level

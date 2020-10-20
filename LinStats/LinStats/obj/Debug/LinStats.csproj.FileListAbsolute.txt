@@ -1,0 +1,45 @@
+C:\Users\alorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.csprojAssemblyReference.cache
+C:\Users\alorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\MainWindow.g.cs
+C:\Users\alorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\App.g.cs
+C:\Users\alorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats_MarkupCompile.cache
+C:\Users\alorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats_MarkupCompile.lref
+C:\Users\alorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\bin\Debug\LinStats.exe.config
+C:\Users\alorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\bin\Debug\LinStats.exe
+C:\Users\alorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\bin\Debug\LinStats.pdb
+C:\Users\alorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\MainWindow.baml
+C:\Users\alorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.g.resources
+C:\Users\alorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.Properties.Resources.resources
+C:\Users\alorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.csproj.GenerateResource.cache
+C:\Users\alorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.csproj.CoreCompileInputs.cache
+C:\Users\alorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.exe
+C:\Users\alorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.pdb
+C:\Users\Fredo\Google Drive\Programming\LinStats\LinStats\LinStats\bin\Debug\LinStats.exe.config
+C:\Users\Fredo\Google Drive\Programming\LinStats\LinStats\LinStats\bin\Debug\LinStats.exe
+C:\Users\Fredo\Google Drive\Programming\LinStats\LinStats\LinStats\bin\Debug\LinStats.pdb
+C:\Users\Fredo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.csprojAssemblyReference.cache
+C:\Users\Fredo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\MainWindow.g.cs
+C:\Users\Fredo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\App.g.cs
+C:\Users\Fredo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats_MarkupCompile.cache
+C:\Users\Fredo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats_MarkupCompile.lref
+C:\Users\Fredo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\MainWindow.baml
+C:\Users\Fredo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.g.resources
+C:\Users\Fredo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.Properties.Resources.resources
+C:\Users\Fredo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.csproj.GenerateResource.cache
+C:\Users\Fredo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.csproj.CoreCompileInputs.cache
+C:\Users\Fredo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.exe
+C:\Users\Fredo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.pdb
+C:\Users\Alfredo Lorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\bin\Debug\LinStats.exe.config
+C:\Users\Alfredo Lorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\bin\Debug\LinStats.exe
+C:\Users\Alfredo Lorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\bin\Debug\LinStats.pdb
+C:\Users\Alfredo Lorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.csprojAssemblyReference.cache
+C:\Users\Alfredo Lorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\MainWindow.g.cs
+C:\Users\Alfredo Lorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\App.g.cs
+C:\Users\Alfredo Lorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats_MarkupCompile.cache
+C:\Users\Alfredo Lorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats_MarkupCompile.lref
+C:\Users\Alfredo Lorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\MainWindow.baml
+C:\Users\Alfredo Lorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.g.resources
+C:\Users\Alfredo Lorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.Properties.Resources.resources
+C:\Users\Alfredo Lorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.csproj.GenerateResource.cache
+C:\Users\Alfredo Lorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.csproj.CoreCompileInputs.cache
+C:\Users\Alfredo Lorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.exe
+C:\Users\Alfredo Lorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.pdb

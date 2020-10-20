@@ -1,0 +1,152 @@
+﻿<!-- testing sync changes -->
+
+<Window x:Class="LinStats.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LinStats"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="800" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Left Side-->
+        <StackPanel Grid.Column="0" Margin="10,0,0,10">
+
+            <!--Name & Class & Submit-->
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Name-->
+                <TextBlock Grid.Column="0" Text="Name"/>
+                <TextBox Name="CharName" Grid.Column="1"/>
+
+                <!--Class-->
+                <TextBlock Grid.Column="2" Text="Class" Margin="5 0 0 0" />
+                <ComboBox Name="CharType" Grid.Column="3">
+                    <ComboBoxItem Content="Knight"/>
+                    <ComboBoxItem Content="Wizard"/>
+                    <ComboBoxItem Content="Royal"/>
+                    <ComboBoxItem Content="Elf"/>
+                    <ComboBoxItem Content="Dark Elf"/>
+                    <ComboBoxItem Content="Dragon Knight"/>
+                    <ComboBoxItem Content="Illusionist"/>
+                </ComboBox>
+
+                <!--Submit-->
+                <Button Grid.Column="4" Name="InitialSubmit" Click="InitialSubmit_Click" Margin="5 0 0 0">OK</Button>
+            </Grid>
+
+            <!--Stats-->
+            <Grid Name="BaseStatsGrid" IsEnabled="False" Margin="0 5 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- STR -->
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="STR"/>
+                <TextBox Name="BaseStrBox" Grid.Row="0" Grid.Column="2"/>
+                <Button Grid.Row="0" Grid.Column="3" Name="StrPlusBut" Click="StrPlusBut_Click">+</Button>
+                <Button Grid.Row="0" Grid.Column="4" Name="StrMinusBut" Click="StrMinusBut_Click">-</Button>
+
+                <!-- CON -->
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="CON"/>
+                <TextBox Name="BaseConBox" Grid.Row="1" Grid.Column="2"/>
+                <Button Grid.Row="1" Grid.Column="3" Name="ConPlusBut" Click="ConPlusBut_Click">+</Button>
+                <Button Grid.Row="1" Grid.Column="4" Name="ConMinusBut" Click="ConMinusBut_Click">-</Button>
+
+                <!-- INT -->
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="INT"/>
+                <TextBox Name="BaseIntBox" Grid.Row="2" Grid.Column="2"/>
+                <Button Grid.Row="2" Grid.Column="3" Name="IntPlusBut" Click="IntPlusBut_Click">+</Button>
+                <Button Grid.Row="2" Grid.Column="4" Name="IntMinusBut" Click="IntMinusBut_Click">-</Button>
+
+                <!-- DEX -->
+                <TextBlock Grid.Row="0" Grid.Column="6" Text="DEX"/>
+                <TextBox Name="BaseDexBox" Grid.Row="0" Grid.Column="7"/>
+                <Button Grid.Row="0" Grid.Column="8" Name="DexPlusBut" Click="DexPlusBut_Click">+</Button>
+                <Button Grid.Row="0" Grid.Column="9" Name="DexMinusBut" Click="DexMinusBut_Click">-</Button>
+
+                <!-- WIS -->
+                <TextBlock Grid.Row="1" Grid.Column="6" Text="WIS"/>
+                <TextBox Name="BaseWisBox" Grid.Row="1" Grid.Column="7"/>
+                <Button Grid.Row="1" Grid.Column="8" Name="WisPlusBut" Click="WisPlusBut_Click">+</Button>
+                <Button Grid.Row="1" Grid.Column="9" Name="WisMinusBut" Click="WisMinusBut_Click">-</Button>
+
+                <!-- CHA -->
+                <TextBlock Grid.Row="2" Grid.Column="6" Text="CHA"/>
+                <TextBox Name="BaseChaBox" Grid.Row="2" Grid.Column="7"/>
+                <Button Grid.Row="2" Grid.Column="8" Name="ChaPlusBut" Click="ChaPlusBut_Click">+</Button>
+                <Button Grid.Row="2" Grid.Column="9" Name="ChaMinusBut" Click="ChaMinusBut_Click">-</Button>
+            </Grid>
+
+            <!-- Unallocated stats -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Bonus Stats -->
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="Unallocated: "/>
+                <TextBlock Grid.Row="2" Grid.Column="2" Name="BonusStatsBlock"/>
+            </Grid>
+
+            <Button IsEnabled="false" Margin="100 2 100 2" Name="SubmitStats" Click="SubmitStats_Click">Submit Base Stats</Button>
+
+            <Grid Name="LevelUpGrid" IsEnabled="false">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="1" Name="LevelUpOne" Click="LevelUpOne_Click">Level Up +1</Button>
+                <Button Grid.Column="1" Grid.Row="1" Name="LevelUpFive" Click="LevelUpFive_Click">Level Up +5</Button>
+                <Button Grid.Column="1" Grid.Row="2" Name="LevelDown" Click="LevelDown_Click">Level Down</Button>
+                <Button Grid.Column="1" Grid.Row="3" Name="ElixirUp" Click="ElixirUp_Click">Elixir</Button>
+            </Grid>
+
+
+        </StackPanel>
+
+        <!--Right Side-->
+        <TextBox IsEnabled="False" Margin="5 5 5 5" Background="#eeee" Grid.Column="1" Text="{Binding Path=DisplayField, UpdateSourceTrigger=PropertyChanged}"/>
+    </Grid>
+</Window>
