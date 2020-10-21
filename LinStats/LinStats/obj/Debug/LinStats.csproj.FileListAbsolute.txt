@@ -43,3 +43,18 @@ C:\Users\Alfredo Lorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj
 C:\Users\Alfredo Lorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.csproj.CoreCompileInputs.cache
 C:\Users\Alfredo Lorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.exe
 C:\Users\Alfredo Lorenzo\Google Drive\Programming\LinStats\LinStats\LinStats\obj\Debug\LinStats.pdb
+C:\Repositories\l1stat_rep\LinStats\LinStats\bin\Debug\LinStats.exe.config
+C:\Repositories\l1stat_rep\LinStats\LinStats\bin\Debug\LinStats.exe
+C:\Repositories\l1stat_rep\LinStats\LinStats\bin\Debug\LinStats.pdb
+C:\Repositories\l1stat_rep\LinStats\LinStats\obj\Debug\LinStats.csprojAssemblyReference.cache
+C:\Repositories\l1stat_rep\LinStats\LinStats\obj\Debug\MainWindow.g.cs
+C:\Repositories\l1stat_rep\LinStats\LinStats\obj\Debug\App.g.cs
+C:\Repositories\l1stat_rep\LinStats\LinStats\obj\Debug\LinStats_MarkupCompile.cache
+C:\Repositories\l1stat_rep\LinStats\LinStats\obj\Debug\LinStats_MarkupCompile.lref
+C:\Repositories\l1stat_rep\LinStats\LinStats\obj\Debug\MainWindow.baml
+C:\Repositories\l1stat_rep\LinStats\LinStats\obj\Debug\LinStats.g.resources
+C:\Repositories\l1stat_rep\LinStats\LinStats\obj\Debug\LinStats.Properties.Resources.resources
+C:\Repositories\l1stat_rep\LinStats\LinStats\obj\Debug\LinStats.csproj.GenerateResource.cache
+C:\Repositories\l1stat_rep\LinStats\LinStats\obj\Debug\LinStats.csproj.CoreCompileInputs.cache
+C:\Repositories\l1stat_rep\LinStats\LinStats\obj\Debug\LinStats.exe
+C:\Repositories\l1stat_rep\LinStats\LinStats\obj\Debug\LinStats.pdb

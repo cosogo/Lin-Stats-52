@@ -122,9 +122,11 @@
             </Grid>
 
             <Button IsEnabled="false" Margin="100 2 100 2" Name="SubmitStats" Click="SubmitStats_Click">Submit Base Stats</Button>
+            <CheckBox Margin="150 2 100 2" Name="LevelOnStatUp" IsChecked="False" Unchecked="LevelOnStatUp_Unchecked"  Checked="LevelOnStatUp_Checked" >Auto-level</CheckBox>
 
             <Grid Name="LevelUpGrid" IsEnabled="false">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
@@ -135,12 +137,14 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="*"/>
+                    
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="1" Name="LevelUpOne" Click="LevelUpOne_Click">Level Up +1</Button>
                 <Button Grid.Column="1" Grid.Row="1" Name="LevelUpFive" Click="LevelUpFive_Click">Level Up +5</Button>
                 <Button Grid.Column="1" Grid.Row="2" Name="LevelDown" Click="LevelDown_Click">Level Down</Button>
                 <Button Grid.Column="1" Grid.Row="3" Name="ElixirUp" Click="ElixirUp_Click">Elixir</Button>
+                
             </Grid>
 
 
