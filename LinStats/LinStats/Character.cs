@@ -768,7 +768,7 @@ namespace LinStats
 
         }
 
-        public void RaiseStat(string stat, string dir, bool autoLevel)
+        public void RaiseStat(string stat, string dir)
         {
             if (initialStatsAllocated == false)
             {
@@ -796,11 +796,6 @@ namespace LinStats
                 {
                     baseStat["bon"]--;
                     baseStat[stat]++;
-
-                    if(baseStat["bon"] == 0 && autoLevel == true)
-                    {
-                        LevelUp();
-                    }
                 }
             }
         }
@@ -816,13 +811,14 @@ namespace LinStats
             }
 
             level++;
+
             if (level > highestLevel)
             {
                 highestLevel = level;
             }
         }
 
-        public void levelDown()
+        public void LevelDown()
         {
             if (level - 1 >= 10)
             {

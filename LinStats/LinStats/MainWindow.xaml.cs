@@ -118,7 +118,11 @@ namespace LinStats
 
         private void StrPlusBut_Click(object sender, RoutedEventArgs e)
         {
-            player.RaiseStat("str", "plus", autoLevel);
+            player.RaiseStat("str", "plus");
+            if (player.baseStat["bon"] == 0 && autoLevel == true)
+            {
+                player.LevelUp();
+            }
             BaseStrBox.Text = player.baseStat["str"].ToString();
             BonusStatsBlock.Text = player.baseStat["bon"].ToString();
             RedrawWindow();
@@ -126,7 +130,7 @@ namespace LinStats
 
         private void StrMinusBut_Click(object sender, RoutedEventArgs e)
         {
-            player.RaiseStat("str", "minus", autoLevel);
+            player.RaiseStat("str", "minus");
             BaseStrBox.Text = player.baseStat["str"].ToString();
             BonusStatsBlock.Text = player.baseStat["bon"].ToString();
             RedrawWindow();
@@ -134,7 +138,11 @@ namespace LinStats
 
         private void ConPlusBut_Click(object sender, RoutedEventArgs e)
         {
-            player.RaiseStat("con", "plus", autoLevel);
+            player.RaiseStat("con", "plus");
+            if (player.baseStat["bon"] == 0 && autoLevel == true)
+            {
+                player.LevelUp();
+            }
             BaseConBox.Text = player.baseStat["con"].ToString();
             BonusStatsBlock.Text = player.baseStat["bon"].ToString();
             RedrawWindow();
@@ -142,7 +150,7 @@ namespace LinStats
 
         private void ConMinusBut_Click(object sender, RoutedEventArgs e)
         {
-            player.RaiseStat("con", "minus", autoLevel);
+            player.RaiseStat("con", "minus");
             BaseConBox.Text = player.baseStat["con"].ToString();
             BonusStatsBlock.Text = player.baseStat["bon"].ToString();
             RedrawWindow();
@@ -150,7 +158,11 @@ namespace LinStats
 
         private void IntPlusBut_Click(object sender, RoutedEventArgs e)
         {
-            player.RaiseStat("int", "plus", autoLevel);
+            player.RaiseStat("int", "plus");
+            if (player.baseStat["bon"] == 0 && autoLevel == true)
+            {
+                player.LevelUp();
+            }
             BaseIntBox.Text = player.baseStat["int"].ToString();
             BonusStatsBlock.Text = player.baseStat["bon"].ToString();
             RedrawWindow();
@@ -158,7 +170,7 @@ namespace LinStats
 
         private void IntMinusBut_Click(object sender, RoutedEventArgs e)
         {
-            player.RaiseStat("int", "minus", autoLevel);
+            player.RaiseStat("int", "minus");
             BaseIntBox.Text = player.baseStat["int"].ToString();
             BonusStatsBlock.Text = player.baseStat["bon"].ToString();
             RedrawWindow();
@@ -166,7 +178,11 @@ namespace LinStats
 
         private void DexPlusBut_Click(object sender, RoutedEventArgs e)
         {
-            player.RaiseStat("dex", "plus", autoLevel);
+            player.RaiseStat("dex", "plus");
+            if (player.baseStat["bon"] == 0 && autoLevel == true)
+            {
+                player.LevelUp();
+            }
             BaseDexBox.Text = player.baseStat["dex"].ToString();
             BonusStatsBlock.Text = player.baseStat["bon"].ToString();
             RedrawWindow();
@@ -174,7 +190,7 @@ namespace LinStats
 
         private void DexMinusBut_Click(object sender, RoutedEventArgs e)
         {
-            player.RaiseStat("dex", "minus", autoLevel);
+            player.RaiseStat("dex", "minus");
             BaseDexBox.Text = player.baseStat["dex"].ToString();
             BonusStatsBlock.Text = player.baseStat["bon"].ToString();
             RedrawWindow();
@@ -182,7 +198,11 @@ namespace LinStats
 
         private void WisPlusBut_Click(object sender, RoutedEventArgs e)
         {
-            player.RaiseStat("wis", "plus", autoLevel);
+            player.RaiseStat("wis", "plus");
+            if (player.baseStat["bon"] == 0 && autoLevel == true)
+            {
+                player.LevelUp();
+            }
             BaseWisBox.Text = player.baseStat["wis"].ToString();
             BonusStatsBlock.Text = player.baseStat["bon"].ToString();
             RedrawWindow();
@@ -190,7 +210,7 @@ namespace LinStats
 
         private void WisMinusBut_Click(object sender, RoutedEventArgs e)
         {
-            player.RaiseStat("wis", "minus", autoLevel);
+            player.RaiseStat("wis", "minus");
             BaseWisBox.Text = player.baseStat["wis"].ToString();
             BonusStatsBlock.Text = player.baseStat["bon"].ToString();
             RedrawWindow();
@@ -198,7 +218,11 @@ namespace LinStats
 
         private void ChaPlusBut_Click(object sender, RoutedEventArgs e)
         {
-            player.RaiseStat("cha", "plus", autoLevel);
+            player.RaiseStat("cha", "plus");
+            if (player.baseStat["bon"] == 0 && autoLevel == true)
+            {
+                player.LevelUp();
+            }
             BaseChaBox.Text = player.baseStat["cha"].ToString();
             BonusStatsBlock.Text = player.baseStat["bon"].ToString();
             RedrawWindow();
@@ -206,7 +230,7 @@ namespace LinStats
 
         private void ChaMinusBut_Click(object sender, RoutedEventArgs e)
         {
-            player.RaiseStat("cha", "minus", autoLevel);
+            player.RaiseStat("cha", "minus");
             BaseChaBox.Text = player.baseStat["cha"].ToString();
             BonusStatsBlock.Text = player.baseStat["bon"].ToString();
             RedrawWindow();
@@ -263,7 +287,7 @@ namespace LinStats
         }
 
         private void LevelDown_Click(object sender, RoutedEventArgs e) { // Handles level down functionality
-            player.levelDown();
+            player.LevelDown();
             RedrawWindow();
         }
 
