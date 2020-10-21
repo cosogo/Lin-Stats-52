@@ -236,12 +236,9 @@ namespace LinStats
 
         private void ElixirUp_Click(object sender, RoutedEventArgs e) // Assigns an bonus stat pt. but only up to 5
         {
-            if(player.elixirsUsed < 5)
-            {
-                player.baseStat["bon"]++;
-                player.elixirsUsed++;
-                BonusStatsBlock.Text = player.baseStat["bon"].ToString();
-            }
+            player.UseElixir();
+
+            BonusStatsBlock.Text = player.baseStat["bon"].ToString();
 
             RedrawWindow();
         }

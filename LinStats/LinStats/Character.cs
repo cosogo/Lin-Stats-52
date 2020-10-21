@@ -187,6 +187,15 @@ namespace LinStats
             return baseStatBonuses["sp"] + statBonuses["sp"] + GetMagicBonus() + GetMagicLevel();
         }
 
+        public void UseElixir()
+        {
+            if (elixirsUsed < 5)
+            {
+                baseStat["bon"]++;
+                elixirsUsed++;
+            }
+        }
+
         public void CalcMagicLevel()
         {
             if (role == "Knight")
