@@ -47,13 +47,18 @@ namespace LinStats
 
         public static readonly DependencyProperty DisplayProperty = DependencyProperty.Register("DisplayField", typeof(string), typeof(MainWindow), new PropertyMetadata(string.Empty));
 
-        public void RedrawWindow()
+        public void RedrawWindow() // redraws the right window to output player stats
         {
-            player.CalcStatBonus();
-            this.DisplayField = player.OutputStats();
+            if(player != null) {
+                player.CalcStatBonus();
+                this.DisplayField = player.OutputStats();
+            } else
+            {
+                this.DisplayField = null;
+            }
         }
 
-        private void InitialSubmit_Click(object sender, RoutedEventArgs e)
+        private void InitialSubmit_Click(object sender, RoutedEventArgs e) // initial class and name submit
         {
             if (String.IsNullOrEmpty(CharType.Text))
             {
@@ -108,6 +113,8 @@ namespace LinStats
             }
 
         }
+
+        // the below functions handle the +/- functionality on the stats
 
         private void StrPlusBut_Click(object sender, RoutedEventArgs e)
         {
@@ -205,7 +212,7 @@ namespace LinStats
             RedrawWindow();
         }
 
-        private void SubmitStats_Click(object sender, RoutedEventArgs e)
+        private void SubmitStats_Click(object sender, RoutedEventArgs e) // submits the base stats
         {
             if(player.initialStatsAllocated == false)
             {
@@ -227,7 +234,7 @@ namespace LinStats
             }
         }
 
-        private void ElixirUp_Click(object sender, RoutedEventArgs e)
+        private void ElixirUp_Click(object sender, RoutedEventArgs e) // Assigns an bonus stat pt. but only up to 5
         {
             if(player.elixirsUsed < 5)
             {
@@ -239,14 +246,14 @@ namespace LinStats
             RedrawWindow();
         }
 
-        private void LevelUpOne_Click(object sender, RoutedEventArgs e)
+        private void LevelUpOne_Click(object sender, RoutedEventArgs e) // Levels the player 1 time
         {
             player.LevelUp();
             BonusStatsBlock.Text = player.baseStat["bon"].ToString();
             RedrawWindow();
         }
 
-        private void LevelUpFive_Click(object sender, RoutedEventArgs e)
+        private void LevelUpFive_Click(object sender, RoutedEventArgs e) // Levels the player 5 times but will not level past the point where you need to allocate stats
         {
             for(int i = 0; i < 5; i++)
             {
@@ -258,19 +265,46 @@ namespace LinStats
             }
         }
 
-        private void LevelDown_Click(object sender, RoutedEventArgs e) {
+        private void LevelDown_Click(object sender, RoutedEventArgs e) { // Handles level down functionality
             player.levelDown();
             RedrawWindow();
         }
 
-        private void LevelOnStatUp_Checked(object sender, RoutedEventArgs e)
+        private void LevelOnStatUp_Checked(object sender, RoutedEventArgs e) // This function handles the checking of auto-level
         {
             autoLevel = true;
         }
 
-        private void LevelOnStatUp_Unchecked(object sender, RoutedEventArgs e)
+        private void LevelOnStatUp_Unchecked(object sender, RoutedEventArgs e) // This function handles the unchecking of auto-level
         {
             autoLevel = false;
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e) // This function exits
+        {
+            System.Environment.Exit(1);
+        }
+
+        private void New_Click(object sender, RoutedEventArgs e) // This function will reset all of the necessary variables for a new session
+        {
+            charLocked = false;
+            player = null;
+            autoLevel = false;
+
+            CharType.IsEnabled = true;
+            CharName.IsEnabled = true;
+            BaseStatsGrid.IsEnabled = false;
+            SubmitStats.IsEnabled = false;
+
+            RedrawWindow();
+        }
+
+        private void Contact_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("For questions/bug reports/requests:" +
+                "\nDiscord: Depardieu#7391" +
+                "\nEmail: alfredolor89@gmail.com" +
+                "\nGithub: TBH");
         }
     }
 

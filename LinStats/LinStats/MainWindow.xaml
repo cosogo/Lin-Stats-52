@@ -7,15 +7,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LinStats"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="800">
+        Title="L1 Stats" Height="800" Width="800">
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0" Grid.ColumnSpan="2">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Name="New" Header="New" Click="New_Click"/>
+                    <MenuItem Name="Import" Header="Import"/>
+                    <MenuItem Name="Header" Header="Export"/>
+                    <MenuItem Name="Exit" Header="Exit" Click="Exit_Click"/>
+                </MenuItem>
+                <MenuItem Header="_Help">
+                    <MenuItem Header="About"/>
+                    <MenuItem Name="Contact" Header="Contact" Click="Contact_Click"/>
+                </MenuItem>
+            </Menu>
+        </DockPanel>
         <!--Left Side-->
-        <StackPanel Grid.Column="0" Margin="10,0,0,10">
+        <StackPanel Grid.Row="1" Grid.Column="0" Margin="10,0,0,10">
 
             <!--Name & Class & Submit-->
             <Grid Margin="5">
@@ -124,6 +144,7 @@
             <Button IsEnabled="false" Margin="100 2 100 2" Name="SubmitStats" Click="SubmitStats_Click">Submit Base Stats</Button>
             <CheckBox Margin="150 2 100 2" Name="LevelOnStatUp" IsChecked="False" Unchecked="LevelOnStatUp_Unchecked"  Checked="LevelOnStatUp_Checked" >Auto-level</CheckBox>
 
+            <!-- Level and elixir buttons -->
             <Grid Name="LevelUpGrid" IsEnabled="false">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -151,6 +172,6 @@
         </StackPanel>
 
         <!--Right Side-->
-        <TextBox IsEnabled="False" Margin="5 5 5 5" Background="#eeee" Grid.Column="1" Text="{Binding Path=DisplayField, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox IsEnabled="False" Margin="5 5 5 5" Background="#eeee"  Grid.Row ="1" Grid.Column="1" Text="{Binding Path=DisplayField, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
 </Window>
