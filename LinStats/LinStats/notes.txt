@@ -1,9 +1,7 @@
 ﻿TO DO / FIX:
 
 From the below mentioned chart I need to implent the following:
-	- hitFromlevel
-	- damageFromLevel
-	- DR
+	- mr from wis
 
 	https://cdn.discordapp.com/attachments/304815231991808000/768999009384792074/image0.png
 

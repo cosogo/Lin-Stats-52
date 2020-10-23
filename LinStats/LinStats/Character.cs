@@ -67,12 +67,25 @@ namespace LinStats
 
         public int GetMeleeHit()
         {
-            return statBonusChart.GetHitFromDex(baseStat["dex"]) + statBonusChart.GetHitFromStr(baseStat["str"]) + baseStatBonuses["meleeHit"];
+            int levelHit = 0;
+
+            if(role != "Wizard") // mage does not get a hit bonus from level
+            {
+                levelHit = level / hitFromLevel;
+            }
+
+            return statBonusChart.GetHitFromDex(baseStat["dex"]) + statBonusChart.GetHitFromStr(baseStat["str"]) + baseStatBonuses["meleeHit"] + levelHit;
         }
 
         public int GetMeleeDamage()
         {
-           return statBonusChart.GetDmgFromStr(baseStat["str"]) + baseStatBonuses["meleeDamage"];
+            if(role == "Elf") // elf only get's a damage from level to ranged damage
+            {
+                return statBonusChart.GetDmgFromStr(baseStat["str"]) + baseStatBonuses["meleeDamage"];
+            } else
+            {
+                return statBonusChart.GetDmgFromStr(baseStat["str"]) + baseStatBonuses["meleeDamage"] + CalcDamageFromLevel(); ;
+            }
         }
 
         public int GetAc()
@@ -99,6 +112,23 @@ namespace LinStats
             return ac + baseStatBonuses["ac"];
         }
 
+        public int GetDr()
+        {
+            if(role == "Knight")
+            {
+                return GetAc() / 2;
+            } else if (role == "Dark Elf")
+            {
+                return GetAc() / 4;
+            } else if (role == "Dragon Knight" || role == "Elf" || role == "Royal")
+            {
+                return GetAc() / 3;
+            } else
+            {
+                return GetAc() / 5;
+            }
+        }
+
         public int GetEr()
         {
             return statBonusChart.GetErFromDex(baseStat["dex"]) + baseStatBonuses["er"] + erFromLevel / level;
@@ -116,7 +146,7 @@ namespace LinStats
 
         public int GetMr()
         {
-            return statBonuses["mr"] + baseStatBonuses["mr"] + baseMr;
+            return baseStatBonuses["mr"] + statBonusChart.GetMrFromWis(baseStat["wis"]) + baseMr;
         }
 
         public int GetMpRegen()
@@ -153,12 +183,27 @@ namespace LinStats
 
         public int GetRangedHit()
         {
-            return statBonusChart.GetHitFromDex(baseStat["dex"]) + statBonusChart.GetHitFromStr(baseStat["str"]) + baseStatBonuses["rangedHit"];
+            int levelHit = 0;
+
+            if (role != "Wizard") // mage does not get a hit bonus from level
+            {
+                levelHit = level / hitFromLevel;
+            }
+
+            return statBonusChart.GetHitFromDex(baseStat["dex"]) + statBonusChart.GetHitFromStr(baseStat["str"]) + baseStatBonuses["rangedHit"] + levelHit;
         }
 
         public int GetRangedDamage()
         {
-            return statBonusChart.GetDmgFromDex(baseStat["dex"]) + baseStatBonuses["rangedDamage"];
+            if (role == "Elf") // elf's damage bonus from level only applies to ranged dmg
+            {
+                return statBonusChart.GetDmgFromDex(baseStat["dex"]) + baseStatBonuses["rangedDamage"] + CalcDamageFromLevel();
+            }
+            else
+            {
+                return statBonusChart.GetDmgFromDex(baseStat["dex"]) + baseStatBonuses["rangedDamage"];
+            }
+            
         }
 
         public int GetMagicLevel()
@@ -237,6 +282,18 @@ namespace LinStats
                 }
             }
         }
+
+        public int CalcDamageFromLevel()
+        {
+            if (role == "Wizard" || role == "Illusionist" || role == "Royal")
+            {
+                return 0;
+            } else
+            {
+                return 10;
+            }
+        }
+
         public void CalcStatBonus() //calculates general stat bonuses
         {
             switch (baseStat["con"]) // CALCULATE hpPerLevel
@@ -264,57 +321,6 @@ namespace LinStats
                     break;
                 default:
                     statBonuses["hpRegen"] = 0;
-                    break;
-            }
-            switch (baseStat["wis"]) // CALCULATE mr
-            {
-                case var exp when (baseStat["wis"] >= 50):
-                    statBonuses["mr"] = 65;
-                    break;
-                case var exp when (baseStat["wis"] >= 47):
-                    statBonuses["mr"] = 64;
-                    break;
-                case var exp when (baseStat["wis"] >= 44):
-                    statBonuses["mr"] = 62;
-                    break;
-                case var exp when (baseStat["wis"] >= 40):
-                    statBonuses["mr"] = 59;
-                    break;
-                case var exp when (baseStat["wis"] >= 35):
-                    statBonuses["mr"] = 55;
-                    break;
-                case var exp when (baseStat["wis"] >= 30):
-                    statBonuses["mr"] = 52;
-                    break;
-                case var exp when (baseStat["wis"] >= 24):
-                    statBonuses["mr"] = 50;
-                    break;
-                case var exp when (baseStat["wis"] >= 23):
-                    statBonuses["mr"] = 47;
-                    break;
-                case var exp when (baseStat["wis"] >= 22):
-                    statBonuses["mr"] = 37;
-                    break;
-                case var exp when (baseStat["wis"] >= 21):
-                    statBonuses["mr"] = 28;
-                    break;
-                case var exp when (baseStat["wis"] >= 20):
-                    statBonuses["mr"] = 21;
-                    break;
-                case var exp when (baseStat["wis"] >= 19):
-                    statBonuses["mr"] = 15;
-                    break;
-                case var exp when (baseStat["wis"] >= 18):
-                    statBonuses["mr"] = 10;
-                    break;
-                case var exp when (baseStat["wis"] >= 17):
-                    statBonuses["mr"] = 6;
-                    break;
-                case var exp when (baseStat["wis"] >= 15):
-                    statBonuses["mr"] = 3;
-                    break;
-                default:
-                    statBonuses["mr"] = 0;
                     break;
             }
             switch (baseStat["wis"]) // CALCULATE mpr
@@ -1534,6 +1540,7 @@ namespace LinStats
                                 "\nMP: " + mp +
                                 "\n" +
                                 "\nAC: " + GetAc() + " (" + baseStatBonuses["ac"] + ")" +
+                                "\nDR: " + GetDr() +
                                 "\nMR: " + GetMr() +
                                 "\nER: " + GetEr() +
                                 "\nSTR: " + baseStat["str"] +
@@ -1595,6 +1602,7 @@ namespace LinStats
                 baseHpPerLevel = 16;
                 baseMr = 0;
                 erFromLevel = 4;
+                hitFromLevel = 3;
             }
         }
 
@@ -1667,6 +1675,7 @@ namespace LinStats
                 baseHpPerLevel = 9;
                 baseMr = 25;
                 erFromLevel = 8;
+                hitFromLevel = 5;
             }
         }
 
@@ -1702,6 +1711,7 @@ namespace LinStats
                 baseHpPerLevel = 10;
                 baseMr = 10;
                 erFromLevel = 8;
+                hitFromLevel = 5;
             }
         }
 
@@ -1738,6 +1748,7 @@ namespace LinStats
                 baseHpPerLevel = 9;
                 baseMr = 10;
                 erFromLevel = 6;
+                hitFromLevel = 3;
             }
         }
 
@@ -1773,6 +1784,7 @@ namespace LinStats
                 baseHpPerLevel = 5;
                 baseMr = 20;
                 erFromLevel = 9;
+                hitFromLevel = 5;
             }
         }
 
@@ -1808,6 +1820,7 @@ namespace LinStats
                 baseHpPerLevel = 12;
                 baseMr = 18;
                 erFromLevel = 7;
+                hitFromLevel = 3;
             }
         }
     }

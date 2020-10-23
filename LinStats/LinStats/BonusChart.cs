@@ -14,6 +14,7 @@ namespace LinStats
         private readonly int[] erChart = new int[MAXSTAT];
         private readonly int[,] strDexChart = new int[MAXSTAT, 5];
         private readonly int[,] mpDiscountChart = new int[16, 10];
+        private readonly int[] mrChart = new int[MAXSTAT];
 
         public int GetErFromDex(int dex)
         {
@@ -102,6 +103,19 @@ namespace LinStats
             }
 
             return strDexChart[dex, 2];
+        }
+
+        public int GetMrFromWis(int wis)
+        {
+            if (wis < 0)
+            {
+                wis = 0;
+            } else if (wis > 60)
+            {
+                wis = 60;
+            }
+
+            return mrChart[wis];
         }
 
             public BonusChart()
@@ -254,6 +268,71 @@ namespace LinStats
                     { 59, 17, 27, 18, 15 },
                     { 60, 17, 28, 18, 16 }
             };
-}
+
+            mrChart[0] = 0;
+            mrChart[1] = 0;
+            mrChart[2] = 0;
+            mrChart[3] = 0;
+            mrChart[4] = 0;
+            mrChart[5] = 0;
+            mrChart[6] = 0;
+            mrChart[7] = 0;
+            mrChart[8] = 0;
+            mrChart[9] = 0;
+            mrChart[10] = 0;
+            mrChart[11] = 0;
+            mrChart[12] = 0;
+            mrChart[13] = 0;
+            mrChart[14] = 0;
+            mrChart[15] = 3;
+            mrChart[16] = 3;
+            mrChart[17] = 6;
+            mrChart[18] = 10;
+            mrChart[19] = 15;
+            mrChart[20] = 21;
+            mrChart[21] = 28;
+            mrChart[22] = 37;
+            mrChart[23] = 47;
+            mrChart[24] = 50;
+            mrChart[25] = 50;
+            mrChart[26] = 50;
+            mrChart[27] = 50;
+            mrChart[28] = 50;
+            mrChart[29] = 50;
+            mrChart[30] = 50;
+            mrChart[31] = 50;
+            mrChart[32] = 50;
+            mrChart[33] = 50;
+            mrChart[34] = 50;
+            mrChart[35] = 50;
+            mrChart[36] = 50;
+            mrChart[37] = 50;
+            mrChart[38] = 50;
+            mrChart[39] = 50;
+            mrChart[40] = 50;
+            mrChart[41] = 50;
+            mrChart[42] = 50;
+            mrChart[43] = 50;
+            mrChart[44] = 50;
+            mrChart[45] = 50;
+            mrChart[46] = 50;
+            mrChart[47] = 50;
+            mrChart[48] = 50;
+            mrChart[49] = 50;
+            mrChart[50] = 50;
+            mrChart[51] = 50;
+            mrChart[52] = 50;
+            mrChart[53] = 50;
+            mrChart[54] = 50;
+            mrChart[55] = 50;
+            mrChart[56] = 50;
+            mrChart[57] = 50;
+            mrChart[58] = 50;
+            mrChart[59] = 50;
+            mrChart[60] = 50;
+
+
+
+        }
     }
 }
