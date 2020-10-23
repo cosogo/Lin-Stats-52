@@ -33,6 +33,8 @@ namespace LinStats
         public int baseMr;
         public int erFromLevel;
         public int hitFromLevel;
+        public int maxHp;
+        public int maxMp;
 
         public bool initialStatsAllocated = false;
 
@@ -168,7 +170,7 @@ namespace LinStats
 
         public int GetHpPerLevel()
         {
-            return baseHpPerLevel + statBonuses["hpPerLevel"] + baseStatBonuses["hpPerLevel"];
+            return baseHpPerLevel + CalcHpPerLevel() + baseStatBonuses["hpPerLevel"];
         }
 
         public int GetHpRegen()
@@ -294,20 +296,22 @@ namespace LinStats
             }
         }
 
+        public int CalcHpPerLevel()
+        {
+            if(baseStat["con"] >= 40)
+            {
+                return 25;
+            } else if (baseStat["con"] >= 16)
+            {
+                return (baseStat["con"] - 16) + 1;
+            } else
+            {
+                return 0;
+            }
+        }
+
         public void CalcStatBonus() //calculates general stat bonuses
         {
-            switch (baseStat["con"]) // CALCULATE hpPerLevel
-            {
-                case var exp when (baseStat["con"] >= 40):
-                    statBonuses["hpPerLevel"] = 25;
-                    break;
-                case var exp when (baseStat["con"] >= 16):
-                    statBonuses["hpPerLevel"] = (baseStat["con"] - 16) + 1;
-                    break;
-                default:
-                    statBonuses["hpPerLevel"] = 0;
-                    break;
-            }
             switch (baseStat["con"]) // CALCULATE hpr
             {
                 case var exp when (baseStat["con"] >= 37):
@@ -418,6 +422,12 @@ namespace LinStats
         public void LevelUp()
         {
             hp += GetHpPerLevel();
+
+            if(hp > maxHp)
+            {
+                hp = maxHp;
+            }
+
             CalcMagicLevel();
 
             if (highestLevel == level && level >= 50)
@@ -1539,16 +1549,17 @@ namespace LinStats
                                 "\nHP: " + hp +
                                 "\nMP: " + mp +
                                 "\n" +
-                                "\nAC: " + GetAc() + " (" + baseStatBonuses["ac"] + ")" +
-                                "\nDR: " + GetDr() +
-                                "\nMR: " + GetMr() +
-                                "\nER: " + GetEr() +
                                 "\nSTR: " + baseStat["str"] +
                                 "\nCON: " + baseStat["con"] +
                                 "\nINT: " + baseStat["int"] +
                                 "\nDEX: " + baseStat["dex"] +
                                 "\nWIS: " + baseStat["wis"] +
                                 "\nCHA: " + baseStat["cha"] +
+                                "\n" +
+                                "\nAC: " + GetAc() + " (" + baseStatBonuses["ac"] + ")" +
+                                "\nDR: " + GetDr() +
+                                "\nMR: " + GetMr() +
+                                "\nER: " + GetEr() +
                                 "\n" +
                                 "\n---STAT BONUSES---" +
                                 "\nMelee Damage: " + GetMeleeDamage() + " (" + baseStatBonuses["meleeDamage"] + ")" +
@@ -1603,6 +1614,8 @@ namespace LinStats
                 baseMr = 0;
                 erFromLevel = 4;
                 hitFromLevel = 3;
+                maxHp = 2000;
+                maxMp = 600;
             }
         }
 
@@ -1639,6 +1652,8 @@ namespace LinStats
                 baseHpPerLevel = 6;
                 baseMr = 15;
                 erFromLevel = 10;
+                maxHp = 1000;
+                maxMp = 1200;
             }
         }
 
@@ -1676,6 +1691,8 @@ namespace LinStats
                 baseMr = 25;
                 erFromLevel = 8;
                 hitFromLevel = 5;
+                maxHp = 1400;
+                maxMp = 900;
             }
         }
 
@@ -1712,6 +1729,8 @@ namespace LinStats
                 baseMr = 10;
                 erFromLevel = 8;
                 hitFromLevel = 5;
+                maxHp = 1400;
+                maxMp = 800;
             }
         }
 
@@ -1749,6 +1768,8 @@ namespace LinStats
                 baseMr = 10;
                 erFromLevel = 6;
                 hitFromLevel = 3;
+                maxHp = 1400;
+                maxMp = 900;
             }
         }
 
@@ -1785,6 +1806,8 @@ namespace LinStats
                 baseMr = 20;
                 erFromLevel = 9;
                 hitFromLevel = 5;
+                maxHp = 1200;
+                maxMp = 1100;
             }
         }
 
@@ -1821,6 +1844,7 @@ namespace LinStats
                 baseMr = 18;
                 erFromLevel = 7;
                 hitFromLevel = 3;
+                maxHp = 1800;
             }
         }
     }

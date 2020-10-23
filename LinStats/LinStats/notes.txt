@@ -1,5 +1,5 @@
 ﻿TO DO / FIX:
- - separate hpPerLevel, hpregen, mpPerLevel, magicBonus from CalcBonus function
+ - hpregen, mpPerLevel, magicBonus from CalcBonus function
  - document each stat bonus and verify it is correct
  - implement import/export
  - look into incorporating gear
