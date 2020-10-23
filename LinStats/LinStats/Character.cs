@@ -131,7 +131,7 @@ namespace LinStats
 
         public int GetEr()
         {
-            return statBonusChart.GetErFromDex(baseStat["dex"]) + baseStatBonuses["er"] + erFromLevel / level;
+            return statBonusChart.GetErFromDex(baseStat["dex"]) + baseStatBonuses["er"] + (level/erFromLevel);
         }
 
         public int GetMpDiscount()
@@ -146,7 +146,7 @@ namespace LinStats
 
         public int GetMr()
         {
-            return baseStatBonuses["mr"] + statBonusChart.GetMrFromWis(baseStat["wis"]) + baseMr;
+            return baseStatBonuses["mr"] + statBonusChart.GetMrFromWis(baseStat["wis"]) + baseMr + (level/2);
         }
 
         public int GetMpRegen()

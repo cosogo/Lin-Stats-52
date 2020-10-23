@@ -1,10 +1,8 @@
 ﻿TO DO / FIX:
-
-From the below mentioned chart I need to implent the following:
-	- mr from wis
-
-	https://cdn.discordapp.com/attachments/304815231991808000/768999009384792074/image0.png
-
+ - separate hpPerLevel, hpregen, mpPerLevel, magicBonus from CalcBonus function
+ - document each stat bonus and verify it is correct
+ - implement import/export
+ - look into incorporating gear
 
  HP per level seems to use the following formula
  base Hp per level (dictitated by class) + stat hp per level (dictated by stats) + starting hp per level bonuses
