@@ -1,7 +1,11 @@
 ﻿TO DO / FIX:
 
-- The way you add stats and it auto levels you by clicking the plus button is off. If I go to level 60 and want to assign the stat point, it will automatically put me at 61
- I'm wondering if removing the auto level when you increase a stat is the best way to go even if it makes the program more difficult to use. 
+From the below mentioned chart I need to implent the following:
+	- hitFromlevel
+	- damageFromLevel
+	- DR
+
+	https://cdn.discordapp.com/attachments/304815231991808000/768999009384792074/image0.png
 
 
  HP per level seems to use the following formula

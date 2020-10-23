@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static LinStats.Character;
+using static LinStats.BonusChart;
 
 namespace LinStats
 {
@@ -27,28 +28,15 @@ namespace LinStats
         public int mp = 0;
         public int elixirsUsed = 0;
         public int highestLevel = 0;
+
         public int baseHpPerLevel;
+        public int baseMr;
+        public int erFromLevel;
+        public int hitFromLevel;
 
         public bool initialStatsAllocated = false;
 
-        public int[,] mpDisArray  = {
-                { 0, 0, 0 ,0 ,0 ,0 ,0, 0, 0, 0 },
-                { 0 , -1, -1, -1 ,-1 , -1, -1, -1, -1, -1},
-                { 0 , -1, -2, -2 ,-2 , -2, -2, -2, -2, -2},
-                { 0 , -1, -2, -3 ,-3 , -3, -3, -3, -3, -3},
-                { 0 , -1, -2, -3 ,-4 , -4, -4, -4, -4, -4},
-                { 0 , -1, -2, -3 ,-4 , -5, -5, -5, -5, -5},
-                { 0 , -1, -2, -3 ,-4 , -5, -6, -6, -6, -6},
-                { 0 , -1, -2, -3 ,-4 , -5, -6, -7, -7, -7},
-                { 0 , -1, -2, -3 ,-4 , -5, -6, -7, -7, -7},
-                { 0 , -1, -2, -3 ,-4 , -5, -6, -7, -7, -7},
-                { 0 , -1, -2, -3 ,-4 , -5, -6, -7, -7, -7},
-                { 0 , -1, -2, -3 ,-4 , -5, -6, -7, -8, -8},
-                { 0 , -1, -2, -3 ,-4 , -5, -6, -7, -8, -8},
-                { 0 , -1, -2, -3 ,-4 , -5, -6, -7, -8, -8},
-                { 0 , -1, -2, -3 ,-4 , -5, -6, -7, -8, -8},
-                { 0 , -1, -2, -3 ,-4 , -5, -6, -7, -8, -9},
-            };
+        public BonusChart statBonusChart = new BonusChart();
 
         public Dictionary<string, int> baseStat = new Dictionary<string, int>()
         {
@@ -68,7 +56,7 @@ namespace LinStats
         public Dictionary<string, int> statBonuses = new Dictionary<string, int>()
         {
             {"hpPerLevel", 0 }, { "hpRegen", 0}, { "meleeDamage", 0}, { "meleeHit", 0}, { "er", 0}, { "sp", 0}, { "magicHit", 0}, { "mpDiscount", 0}, { "mpPerLevel", 0},
-            { "mpRegen", 0}, { "rangedDamage", 0}, { "rangedHit", 0}, {"magicBonus", 0 }, { "mr", 0}, { "magicCrit", 0}, { "weightCap", 0}, {"ac", 0}, {"magicLevel", 0}
+            { "mpRegen", 0}, { "rangedDamage", 0}, { "rangedHit", 0}, {"magicBonus", 0 }, { "mr", 0}, { "magicCrit", 0}, { "weightCap", 0}, {"magicLevel", 0}
         };
 
         public Dictionary<string, int> baseStatBonuses = new Dictionary<string, int>()
@@ -79,46 +67,46 @@ namespace LinStats
 
         public int GetMeleeHit()
         {
-            return statBonuses["meleeHit"] + baseStatBonuses["meleeHit"];
+            return statBonusChart.GetHitFromDex(baseStat["dex"]) + statBonusChart.GetHitFromStr(baseStat["str"]) + baseStatBonuses["meleeHit"];
         }
 
         public int GetMeleeDamage()
         {
-           return statBonuses["meleeDamage"] + baseStatBonuses["meleeDamage"];
+           return statBonusChart.GetDmgFromStr(baseStat["str"]) + baseStatBonuses["meleeDamage"];
         }
 
         public int GetAc()
         {
-            return statBonuses["ac"] + baseStatBonuses["ac"];
+            int ac = 10;
+
+            if(baseStat["dex"] < 10)
+            {
+                ac -= level / 8; 
+            } else if (baseStat["dex"] < 13)
+            {
+                ac -= level / 7;
+            } else if (baseStat["dex"] < 16)
+            {
+                ac -= level / 6;
+            } else if (baseStat["dex"] < 18)
+            {
+                ac -= level / 5;
+            } else
+            {
+                ac -= level / 4;
+            }
+
+            return ac + baseStatBonuses["ac"];
         }
 
         public int GetEr()
         {
-            return statBonuses["er"] + baseStatBonuses["er"];
+            return statBonusChart.GetErFromDex(baseStat["dex"]) + baseStatBonuses["er"] + erFromLevel / level;
         }
 
         public int GetMpDiscount()
         {
-            int effectiveInt = baseStat["int"] - 12;
-            int effectiveMagicLevel = GetMagicLevel() - 1;
-
-            if (effectiveInt >= 15)
-            {
-                effectiveInt = 15;
-            }
-            if (effectiveInt <= 0)
-            {
-                effectiveInt = 0;
-            }
-
-            if(effectiveMagicLevel < 0)
-            {
-                effectiveMagicLevel = 0;
-            }
-
-            int discount = mpDisArray[effectiveInt, effectiveMagicLevel];
-
-            return statBonuses["mpDiscount"] + baseStatBonuses["mpDiscount"] + discount;
+            return statBonusChart.GetMpDiscount(GetMagicLevel(), baseStat["int"]) + baseStatBonuses["mpDiscount"];
         }
 
         public int GetMagicHit()
@@ -128,7 +116,7 @@ namespace LinStats
 
         public int GetMr()
         {
-            return statBonuses["mr"] + baseStatBonuses["mr"];
+            return statBonuses["mr"] + baseStatBonuses["mr"] + baseMr;
         }
 
         public int GetMpRegen()
@@ -165,12 +153,12 @@ namespace LinStats
 
         public int GetRangedHit()
         {
-            return statBonuses["rangedHit"] + baseStatBonuses["rangedHit"];
+            return statBonusChart.GetHitFromDex(baseStat["dex"]) + statBonusChart.GetHitFromStr(baseStat["str"]) + baseStatBonuses["rangedHit"];
         }
 
         public int GetRangedDamage()
         {
-            return statBonuses["rangedDamage"] + baseStatBonuses["rangedDamage"];
+            return statBonusChart.GetDmgFromDex(baseStat["dex"]) + baseStatBonuses["rangedDamage"];
         }
 
         public int GetMagicLevel()
@@ -251,385 +239,6 @@ namespace LinStats
         }
         public void CalcStatBonus() //calculates general stat bonuses
         {
-            switch (baseStat["str"])
-            {
-                case var exp when (baseStat["str"] >= 48):
-                    statBonuses["meleeDamage"] = 15;
-                    statBonuses["meleeHit"] = 14;
-                    break;
-                case var exp when (baseStat["str"] >= 47):
-                    statBonuses["meleeDamage"] = 15;
-                    statBonuses["meleeHit"] = 13;
-                    break;
-                case var exp when (baseStat["str"] >= 45):
-                    statBonuses["meleeDamage"] = 14;
-                    statBonuses["meleeHit"] = 13;
-                    break;
-                case var exp when (baseStat["str"] >= 43):
-                    statBonuses["meleeDamage"] = 14;
-                    statBonuses["meleeHit"] = 12;
-                    break;
-                case var exp when (baseStat["str"] >= 42):
-                    statBonuses["meleeDamage"] = 13;
-                    statBonuses["meleeHit"] = 12;
-                    break;
-                case var exp when (baseStat["str"] >= 39):
-                    statBonuses["meleeDamage"] = 13;
-                    statBonuses["meleeHit"] = 11;
-                    break;
-                case var exp when (baseStat["str"] >= 36):
-                    statBonuses["meleeDamage"] = 12;
-                    statBonuses["meleeHit"] = 10;
-                    break;
-                case var exp when (baseStat["str"] >= 35):
-                    statBonuses["meleeDamage"] = 12;
-                    statBonuses["meleeHit"] = 9;
-                    break;
-                case var exp when (baseStat["str"] >= 34):
-                    statBonuses["meleeDamage"] = 11;
-                    statBonuses["meleeHit"] = 9;
-                    break;
-                case var exp when (baseStat["str"] >= 33):
-                    statBonuses["meleeDamage"] = 10;
-                    statBonuses["meleeHit"] = 9;
-                    break;
-                case var exp when (baseStat["str"] >= 31):
-                    statBonuses["meleeDamage"] = 9;
-                    statBonuses["meleeHit"] = 8;
-                    break;
-                case var exp when (baseStat["str"] >= 30):
-                    statBonuses["meleeDamage"] = 8;
-                    statBonuses["meleeHit"] = 8;
-                    break;
-                case var exp when (baseStat["str"] >= 29):
-                    statBonuses["meleeDamage"] = 8;
-                    statBonuses["meleeHit"] = 7;
-                    break;
-                case var exp when (baseStat["str"] >= 27):
-                    statBonuses["meleeDamage"] = 7;
-                    statBonuses["meleeHit"] = 7;
-                    break;
-                case var exp when (baseStat["str"] >= 26):
-                    statBonuses["meleeDamage"] = 7;
-                    statBonuses["meleeHit"] = 6;
-                    break;
-                case var exp when (baseStat["str"] >= 24):
-                    statBonuses["meleeDamage"] = 6;
-                    statBonuses["meleeHit"] = 6;
-                    break;
-                case var exp when (baseStat["str"] >= 23):
-                    statBonuses["meleeDamage"] = 6;
-                    statBonuses["meleeHit"] = 5;
-                    break;
-                case var exp when (baseStat["str"] >= 21):
-                    statBonuses["meleeDamage"] = 5;
-                    statBonuses["meleeHit"] = 5;
-                    break;
-                case var exp when (baseStat["str"] >= 19):
-                    statBonuses["meleeDamage"] = 4;
-                    statBonuses["meleeHit"] = 4;
-                    break;
-                case var exp when (baseStat["str"] >= 18):
-                    statBonuses["meleeDamage"] = 3;
-                    statBonuses["meleeHit"] = 4;
-                    break;
-                case var exp when (baseStat["str"] >= 17):
-                    statBonuses["meleeDamage"] = 3;
-                    statBonuses["meleeHit"] = 3;
-                    break;
-                case var exp when (baseStat["str"] >= 16):
-                    statBonuses["meleeDamage"] = 2;
-                    statBonuses["meleeHit"] = 3;
-                    break;
-                case var exp when (baseStat["str"] >= 15):
-                    statBonuses["meleeDamage"] = 2;
-                    statBonuses["meleeHit"] = 2;
-                    break;
-                case var exp when (baseStat["str"] >= 14):
-                    statBonuses["meleeDamage"] = 2;
-                    statBonuses["meleeHit"] = 1;
-                    break;
-                case var exp when (baseStat["str"] >= 13):
-                    statBonuses["meleeDamage"] = 1;
-                    statBonuses["meleeHit"] = 1;
-                    break;
-                case var exp when (baseStat["str"] >= 12):
-                    statBonuses["meleeDamage"] = 0;
-                    statBonuses["meleeHit"] = 1;
-                    break;
-                case var exp when (baseStat["str"] >= 11):
-                    statBonuses["meleeDamage"] = 0;
-                    statBonuses["meleeHit"] = 0;
-                    break;
-                case var exp when (baseStat["str"] >= 10):
-                    statBonuses["meleeDamage"] = -1;
-                    statBonuses["meleeHit"] = 0;
-                    break;
-                case var exp when (baseStat["str"] >= 9):
-                    statBonuses["meleeDamage"] = -1;
-                    statBonuses["meleeHit"] = -1;
-                    break;
-                case var exp when (baseStat["str"] >= 8):
-                    statBonuses["meleeDamage"] = -2;
-                    statBonuses["meleeHit"] = -1;
-                    break;
-                case var exp when (baseStat["str"] >= 7):
-                    statBonuses["meleeDamage"] = -2;
-                    statBonuses["meleeHit"] = -2;
-                    break;
-                case var exp when (baseStat["str"] >= 6):
-                    statBonuses["meleeDamage"] = -3;
-                    statBonuses["meleeHit"] = -2;
-                    break;
-                case var exp when (baseStat["str"] >= 5):
-                    statBonuses["meleeDamage"] = -3;
-                    statBonuses["meleeHit"] = -3;
-                    break;
-                case var exp when (baseStat["str"] >= 4):
-                    statBonuses["meleeDamage"] = -4;
-                    statBonuses["meleeHit"] = -3;
-                    break;
-                case var exp when (baseStat["str"] >= 3):
-                    statBonuses["meleeDamage"] = -4;
-                    statBonuses["meleeHit"] = -4;
-                    break;
-                case var exp when (baseStat["str"] >= 2):
-                    statBonuses["meleeDamage"] = -5;
-                    statBonuses["meleeHit"] = -4;
-                    break;
-                case var exp when (baseStat["str"] >= 1):
-                    statBonuses["meleeDamage"] = -5;
-                    statBonuses["meleeHit"] = -5;
-                    break;
-            }
-            switch (baseStat["dex"])
-            {
-                case var exp when (baseStat["dex"] >= 50):
-                    statBonuses["rangedDamage"] = 13;
-                    statBonuses["rangedHit"] = 25;
-                    statBonuses["er"] = 21;
-                    break;
-                case var exp when (baseStat["dex"] >= 48):
-                    statBonuses["rangedDamage"] = 13;
-                    statBonuses["rangedHit"] = 25;
-                    statBonuses["er"] = 20;
-                    break;
-                case var exp when (baseStat["dex"] >= 46):
-                    statBonuses["rangedDamage"] = 12;
-                    statBonuses["rangedHit"] = 25;
-                    statBonuses["er"] = 19;
-                    break;
-                case var exp when (baseStat["dex"] >= 44):
-                    statBonuses["rangedDamage"] = 12;
-                    statBonuses["rangedHit"] = 25;
-                    statBonuses["er"] = 18;
-                    break;
-                case var exp when (baseStat["dex"] >= 42):
-                    statBonuses["rangedDamage"] = 11;
-                    statBonuses["rangedHit"] = 25;
-                    statBonuses["er"] = 17;
-                    break;
-                case var exp when (baseStat["dex"] >= 40):
-                    statBonuses["rangedDamage"] = 11;
-                    statBonuses["rangedHit"] = 25;
-                    statBonuses["er"] = 16;
-                    break;
-                case var exp when (baseStat["dex"] >= 39):
-                    statBonuses["rangedDamage"] = 10;
-                    statBonuses["rangedHit"] = 25;
-                    statBonuses["er"] = 15;
-                    break;
-                case var exp when (baseStat["dex"] >= 38):
-                    statBonuses["rangedDamage"] = 10;
-                    statBonuses["rangedHit"] = 24;
-                    statBonuses["er"] = 15;
-                    break;
-                case var exp when (baseStat["dex"] >= 37):
-                    statBonuses["rangedDamage"] = 10;
-                    statBonuses["rangedHit"] = 23;
-                    statBonuses["er"] = 15;
-                    break;
-                case var exp when (baseStat["dex"] >= 36):
-                    statBonuses["rangedDamage"] = 10;
-                    statBonuses["rangedHit"] = 22;
-                    statBonuses["er"] = 14;
-                    break;
-                case var exp when (baseStat["dex"] >= 35):
-                    statBonuses["rangedDamage"] = 9;
-                    statBonuses["rangedHit"] = 21;
-                    statBonuses["er"] = 13;
-                    break;
-                case var exp when (baseStat["dex"] >= 34):
-                    statBonuses["rangedDamage"] = 9;
-                    statBonuses["rangedHit"] = 20;
-                    statBonuses["er"] = 13;
-                    break;
-                case var exp when (baseStat["dex"] >= 33):
-                    statBonuses["rangedDamage"] = 8;
-                    statBonuses["rangedHit"] = 18;
-                    statBonuses["er"] = 12;
-                    break;
-                case var exp when (baseStat["dex"] >= 32):
-                    statBonuses["rangedDamage"] = 8;
-                    statBonuses["rangedHit"] = 18;
-                    statBonuses["er"] = 12;
-                    break;
-                case var exp when (baseStat["dex"] >= 31):
-                    statBonuses["rangedDamage"] = 8;
-                    statBonuses["rangedHit"] = 17;
-                    statBonuses["er"] = 11;
-                    break;
-                case var exp when (baseStat["dex"] >= 30):
-                    statBonuses["rangedDamage"] = 8;
-                    statBonuses["rangedHit"] = 16;
-                    statBonuses["er"] = 11;
-                    break;
-                case var exp when (baseStat["dex"] >= 29):
-                    statBonuses["rangedDamage"] = 7;
-                    statBonuses["rangedHit"] = 15;
-                    statBonuses["er"] = 10;
-                    break;
-                case var exp when (baseStat["dex"] >= 28):
-                    statBonuses["rangedDamage"] = 7;
-                    statBonuses["rangedHit"] = 14;
-                    statBonuses["er"] = 10;
-                    break;
-                case var exp when (baseStat["dex"] >= 27):
-                    statBonuses["rangedDamage"] = 7;
-                    statBonuses["rangedHit"] = 13;
-                    statBonuses["er"] = 9;
-                    break;
-                case var exp when (baseStat["dex"] >= 26):
-                    statBonuses["rangedDamage"] = 6;
-                    statBonuses["rangedHit"] = 12;
-                    statBonuses["er"] = 9;
-                    break;
-                case var exp when (baseStat["dex"] >= 25):
-                    statBonuses["rangedDamage"] = 6;
-                    statBonuses["rangedHit"] = 11;
-                    statBonuses["er"] = 8;
-                    break;
-                case var exp when (baseStat["dex"] >= 24):
-                    statBonuses["rangedDamage"] = 6;
-                    statBonuses["rangedHit"] = 10;
-                    statBonuses["er"] = 8;
-                    break;
-                case var exp when (baseStat["dex"] >= 23):
-                    statBonuses["rangedDamage"] = 5;
-                    statBonuses["rangedHit"] = 9;
-                    statBonuses["er"] = 7;
-                    break;
-                case var exp when (baseStat["dex"] >= 22):
-                    statBonuses["rangedDamage"] = 5;
-                    statBonuses["rangedHit"] = 8;
-                    statBonuses["er"] = 7;
-                    break;
-                case var exp when (baseStat["dex"] >= 21):
-                    statBonuses["rangedDamage"] = 5;
-                    statBonuses["rangedHit"] = 7;
-                    statBonuses["er"] = 6;
-                    break;
-                case var exp when (baseStat["dex"] >= 20):
-                    statBonuses["rangedDamage"] = 4;
-                    statBonuses["rangedHit"] = 6;
-                    statBonuses["er"] = 6;
-                    break;
-                case var exp when (baseStat["dex"] >= 19):
-                    statBonuses["rangedDamage"] = 4;
-                    statBonuses["rangedHit"] = 5;
-                    statBonuses["er"] = 5;
-                    break;
-                case var exp when (baseStat["dex"] >= 18):
-                    statBonuses["rangedDamage"] = 4;
-                    statBonuses["rangedHit"] = 4;
-                    statBonuses["er"] = 5;
-                    break;
-                case var exp when (baseStat["dex"] >= 17):
-                    statBonuses["rangedDamage"] = 3;
-                    statBonuses["rangedHit"] = 4;
-                    statBonuses["er"] = 4;
-                    break;
-                case var exp when (baseStat["dex"] >= 16):
-                    statBonuses["rangedDamage"] = 2;
-                    statBonuses["rangedHit"] = 3;
-                    statBonuses["er"] = 4;
-                    break;
-                case var exp when (baseStat["dex"] >= 15):
-                    statBonuses["rangedDamage"] = 1;
-                    statBonuses["rangedHit"] = 3;
-                    statBonuses["er"] = 3;
-                    break;
-                case var exp when (baseStat["dex"] >= 14):
-                    statBonuses["rangedDamage"] = 0;
-                    statBonuses["rangedHit"] = 2;
-                    statBonuses["er"] = 3;
-                    break;
-                case var exp when (baseStat["dex"] >= 13):
-                    statBonuses["rangedDamage"] = 0;
-                    statBonuses["rangedHit"] = 2;
-                    statBonuses["er"] = 2;
-                    break;
-                case var exp when (baseStat["dex"] >= 12):
-                    statBonuses["rangedDamage"] = 0;
-                    statBonuses["rangedHit"] = 1;
-                    statBonuses["er"] = 2;
-                    break;
-                case var exp when (baseStat["dex"] >= 11):
-                    statBonuses["rangedDamage"] = 0;
-                    statBonuses["rangedHit"] = 1;
-                    statBonuses["er"] = 1;
-                    break;
-                case var exp when (baseStat["dex"] >= 10):
-                    statBonuses["rangedDamage"] = 0;
-                    statBonuses["rangedHit"] = 0;
-                    statBonuses["er"] = 1;
-                    break;
-                case var exp when (baseStat["dex"] >= 9):
-                    statBonuses["rangedDamage"] = 0;
-                    statBonuses["rangedHit"] = 0;
-                    statBonuses["er"] = 0;
-                    break;
-                case var exp when (baseStat["dex"] >= 8):
-                    statBonuses["rangedDamage"] = 0;
-                    statBonuses["rangedHit"] = -1;
-                    statBonuses["er"] = 0;
-                    break;
-                case var exp when (baseStat["dex"] >= 7):
-                    statBonuses["rangedDamage"] = 0;
-                    statBonuses["rangedHit"] = -1;
-                    statBonuses["er"] = -1;
-                    break;
-                case var exp when (baseStat["dex"] >= 6):
-                    statBonuses["rangedDamage"] = 0;
-                    statBonuses["rangedHit"] = -2;
-                    statBonuses["er"] = -1;
-                    break;
-                case var exp when (baseStat["dex"] >= 5):
-                    statBonuses["rangedDamage"] = 0;
-                    statBonuses["rangedHit"] = -2;
-                    statBonuses["er"] = -2;
-                    break;
-                case var exp when (baseStat["dex"] >= 4):
-                    statBonuses["rangedDamage"] = 0;
-                    statBonuses["rangedHit"] = -3;
-                    statBonuses["er"] = -2;
-                    break;
-                case var exp when (baseStat["dex"] >= 3):
-                    statBonuses["rangedDamage"] = 0;
-                    statBonuses["rangedHit"] = -3;
-                    statBonuses["er"] = -3;
-                    break;
-                case var exp when (baseStat["dex"] >= 2):
-                    statBonuses["rangedDamage"] = 0;
-                    statBonuses["rangedHit"] = -4;
-                    statBonuses["er"] = -3;
-                    break;
-                case var exp when (baseStat["dex"] >= 0):
-                    statBonuses["rangedDamage"] = 0;
-                    statBonuses["rangedHit"] = -4;
-                    statBonuses["er"] = -4;
-                    break;
-            }
             switch (baseStat["con"]) // CALCULATE hpPerLevel
             {
                 case var exp when (baseStat["con"] >= 40):
@@ -1924,7 +1533,7 @@ namespace LinStats
                                 "\nHP: " + hp +
                                 "\nMP: " + mp +
                                 "\n" +
-                                "\nAC: " + GetAc() +
+                                "\nAC: " + GetAc() + " (" + baseStatBonuses["ac"] + ")" +
                                 "\nMR: " + GetMr() +
                                 "\nER: " + GetEr() +
                                 "\nSTR: " + baseStat["str"] +
@@ -1984,6 +1593,8 @@ namespace LinStats
                 maxBase["cha"] = 16;
 
                 baseHpPerLevel = 16;
+                baseMr = 0;
+                erFromLevel = 4;
             }
         }
 
@@ -2018,6 +1629,8 @@ namespace LinStats
                 maxBase["cha"] = 18;
 
                 baseHpPerLevel = 6;
+                baseMr = 15;
+                erFromLevel = 10;
             }
         }
 
@@ -2052,6 +1665,8 @@ namespace LinStats
                 maxBase["cha"] = 16;
 
                 baseHpPerLevel = 9;
+                baseMr = 25;
+                erFromLevel = 8;
             }
         }
 
@@ -2085,6 +1700,8 @@ namespace LinStats
                 maxBase["cha"] = 18;
 
                 baseHpPerLevel = 10;
+                baseMr = 10;
+                erFromLevel = 8;
             }
         }
 
@@ -2119,6 +1736,8 @@ namespace LinStats
                 maxBase["cha"] = 18;
 
                 baseHpPerLevel = 9;
+                baseMr = 10;
+                erFromLevel = 6;
             }
         }
 
@@ -2152,6 +1771,8 @@ namespace LinStats
                 maxBase["cha"] = 18;
 
                 baseHpPerLevel = 5;
+                baseMr = 20;
+                erFromLevel = 9;
             }
         }
 
@@ -2185,6 +1806,8 @@ namespace LinStats
                 maxBase["cha"] = 14;
 
                 baseHpPerLevel = 12;
+                baseMr = 18;
+                erFromLevel = 7;
             }
         }
     }
