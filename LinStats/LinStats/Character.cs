@@ -35,6 +35,8 @@ namespace LinStats
         public int hitFromLevel;
         public int maxHp;
         public int maxMp;
+        public float mpModifier;
+
 
         public bool initialStatsAllocated = false;
 
@@ -55,16 +57,10 @@ namespace LinStats
             {"str", 0 }, {"dex", 0 }, {"con", 0 }, {"int", 0 }, {"wis", 0 }, {"cha", 0 }
         };
 
-        public Dictionary<string, int> statBonuses = new Dictionary<string, int>()
-        {
-            {"hpPerLevel", 0 }, { "hpRegen", 0}, { "meleeDamage", 0}, { "meleeHit", 0}, { "er", 0}, { "sp", 0}, { "magicHit", 0}, { "mpDiscount", 0}, { "mpPerLevel", 0},
-            { "mpRegen", 0}, { "rangedDamage", 0}, { "rangedHit", 0}, {"magicBonus", 0 }, { "mr", 0}, { "magicCrit", 0}, { "weightCap", 0}, {"magicLevel", 0}
-        };
-
         public Dictionary<string, int> baseStatBonuses = new Dictionary<string, int>()
         {
-            {"hpPerLevel", 0 }, { "hpRegen", 0}, { "meleeDamage", 0}, { "meleeHit", 0}, { "er", 0}, { "sp", 0}, { "magicHit", 0}, { "mpDiscount", 0}, { "mpPerLevel", 0},
-            { "mpRegen", 0}, { "rangedDamage", 0}, { "rangedHit", 0}, {"magicBonus", 0 },  { "mr", 0}, { "magicCrit", 0}, { "weightCap", 0}, {"ac", 0}, {"magicLevel", 0}
+            { "hpRegen", 0}, { "sp", 0}, { "magicHit", 0}, { "mpDiscount", 0}, { "mpPerLevel", 0}, {"er", 0}, {"meleeDamage", 0}, {"meleeHit", 0}, {"rangedHit", 0},
+            {"rangedDamage", 0}, { "mpRegen", 0},  { "mr", 0}, { "magicCrit", 0}, { "weightCap", 0}, {"ac", 0}, {"magicLevel", 0}, {"magicBonus", 0}, {"hpPerLevel", 0}
         };
 
         public int GetMeleeHit()
@@ -143,7 +139,7 @@ namespace LinStats
 
         public int GetMagicHit()
         {
-            return statBonuses["magicHit"] + baseStatBonuses["magicHit"];
+            return baseStatBonuses["magicHit"];
         }
 
         public int GetMr()
@@ -153,12 +149,12 @@ namespace LinStats
 
         public int GetMpRegen()
         {
-            return statBonuses["mpRegen"] + baseStatBonuses["mpRegen"];
+            return CalcMpRegen() + baseStatBonuses["mpRegen"];
         }
 
         public int GetWeightCap()
         {
-            int weightTotal = ((baseStat["str"] + baseStat["con"] + statBonuses["weightCap"] + baseStatBonuses["weightCap"] + 1) / 2) * 150;
+            int weightTotal = ((baseStat["str"] + baseStat["con"] + baseStatBonuses["weightCap"] + 1) / 2) * 150;
 
             if(weightTotal > 3600)
             {
@@ -173,14 +169,19 @@ namespace LinStats
             return baseHpPerLevel + CalcHpPerLevel() + baseStatBonuses["hpPerLevel"];
         }
 
+        public int GetMpPerLevel()
+        {
+            return baseStatBonuses["mpPerLevel"] + CalcMpPerLevel();
+        }
+
         public int GetHpRegen()
         {
-            return statBonuses["hpRegen"] + baseStatBonuses["hpRegen"];
+            return CalcHpRegen() + baseStatBonuses["hpRegen"];
         }
 
         public int GetMagicCrit()
         {
-            return statBonuses["magicCrit"] + baseStatBonuses["magicCrit"];
+            return baseStatBonuses["magicCrit"];
         }
 
         public int GetRangedHit()
@@ -210,16 +211,76 @@ namespace LinStats
 
         public int GetMagicLevel()
         {
-            return statBonuses["magicLevel"];
+            int magicLevel = 0;
+
+            if (role == "Knight")
+            {
+                magicLevel = level / 50;
+                if (magicLevel > 1)
+                {
+                    magicLevel = 1;
+                }
+            }
+            else if (role == "Wizard")
+            {
+                magicLevel = level / 4;
+                if (magicLevel > 10)
+                {
+                    magicLevel = 10;
+                }
+            }
+            else if (role == "Elf")
+            {
+                magicLevel = level / 8;
+                if (magicLevel > 6)
+                {
+                    magicLevel = 6;
+                }
+
+            }
+            else if (role == "Royal")
+            {
+                magicLevel = level / 10;
+                if (magicLevel > 2)
+                {
+                    magicLevel = 2;
+                }
+            }
+            else if (role == "Dark Elf")
+            {
+                magicLevel = level / 12;
+                if (magicLevel > 2)
+                {
+                    magicLevel = 2;
+                }
+            }
+            else if (role == "Dragon Knight")
+            {
+                magicLevel = level / 15;
+                if (magicLevel > 3)
+                {
+                    magicLevel = 3;
+                }
+            }
+            else if (role == "Illusionist")
+            {
+                magicLevel = level / 10;
+                if (magicLevel > 4)
+                {
+                    magicLevel = 4;
+                }
+            }
+
+            return magicLevel;
         }
 
         public int GetMagicBonus()
         {
-            return baseStatBonuses["magicBonus"] + statBonuses["magicBonus"];
+            return baseStatBonuses["magicBonus"] + CalcMagicBonus();
         }
         public int GetSp()
         {
-            return baseStatBonuses["sp"] + statBonuses["sp"] + GetMagicBonus() + GetMagicLevel();
+            return baseStatBonuses["sp"] + GetMagicBonus() + GetMagicLevel();
         }
 
         public void UseElixir()
@@ -231,57 +292,20 @@ namespace LinStats
             }
         }
 
-        public void CalcMagicLevel()
+        public int CalcMpRegen()
         {
-            if (role == "Knight")
+            if(baseStat["wis"] < 14)
             {
-                statBonuses["magicLevel"] = level / 50;
-                if (statBonuses["magicLevel"] > 1)
-                {
-                    statBonuses["magicLevel"] = 1;
-                }
-            } else if (role == "Wizard")
+                return 0;
+            } else if(baseStat["wis"] == 14)
             {
-                statBonuses["magicLevel"] = level / 4;
-                if (statBonuses["magicLevel"] > 10)
-                {
-                    statBonuses["magicLevel"] = 10;
-                }
-            } else if (role == "Elf")
+                return 1;
+            } else if (baseStat["wis"] == 15 || baseStat["wis"] == 16)
             {
-                statBonuses["magicLevel"] = level / 8;
-                if (statBonuses["magicLevel"] > 6)
-                {
-                    statBonuses["magicLevel"] = 6;
-                }
-
-            } else if (role == "Royal")
+                return 2;
+            } else
             {
-                statBonuses["magicLevel"] = level / 10;
-                if (statBonuses["magicLevel"] > 2)
-                {
-                    statBonuses["magicLevel"] = 2;
-                }
-            } else if (role == "Dark Elf")
-            {
-                statBonuses["magicLevel"] = level / 12;
-                if (statBonuses["magicLevel"] > 2) {
-                    statBonuses["magicLevel"] = 2;
-                }
-            } else if (role == "Dragon Knight")
-            {
-                statBonuses["magicLevel"] = level / 15;
-                if (statBonuses["magicLevel"] > 3)
-                {
-                    statBonuses["magicLevel"] = 3;
-                }
-            } else if (role == "Illusionist")
-            {
-                statBonuses["magicLevel"] = level / 10;
-                if (statBonuses["magicLevel"] > 4)
-                {
-                    statBonuses["magicLevel"] = 4;
-                }
+                return 3;
             }
         }
 
@@ -310,81 +334,50 @@ namespace LinStats
             }
         }
 
-        public void CalcStatBonus() //calculates general stat bonuses
+        public int CalcHpRegen() { 
+            if(baseStat["con"] >= 37)
+            {
+                return 25;
+            } else if (baseStat["con"] >= 13)
+            {
+                return (baseStat["con"] - 13) + 1;
+            } else  if (baseStat["con"] >= 8)
+            {
+                return 1;
+            } else
+            {
+                return 0;
+            }
+        }
+
+        public int CalcMagicBonus()
         {
-            switch (baseStat["con"]) // CALCULATE hpr
-            {
-                case var exp when (baseStat["con"] >= 37):
-                    statBonuses["hpRegen"] = 25;
-                    break;
-                case var exp when (baseStat["con"] >= 13):
-                    statBonuses["hpRegen"] = (baseStat["con"] - 13) + 1;
-                    break;
-                case var exp when (baseStat["con"] >= 8):
-                    statBonuses["hpRegen"] = 1;
-                    break;
-                default:
-                    statBonuses["hpRegen"] = 0;
-                    break;
-            }
-            switch (baseStat["wis"]) // CALCULATE mpr
-            {
-                case var exp when (baseStat["wis"] >= 38):
-                    statBonuses["mpPerLevel"] = 25;
-                    break;
-                case var exp when (baseStat["wis"] >= 26):
-                    statBonuses["mpPerLevel"] = baseStat["wis"] - 13;
-                    break;
-                case var exp when (baseStat["wis"] >= 16):
-                    statBonuses["mpPerLevel"] = baseStat["wis"] - 14;
-                    break;
-                case var exp when (baseStat["wis"] >= 14):
-                    statBonuses["mpPerLevel"] = 2;
-                    break;
-                case var exp when (baseStat["wis"] >= 12):
-                    statBonuses["mpPerLevel"] = 1;
-                    break;
-                case var exp when (baseStat["wis"] >= 11):
-                    statBonuses["mpPerLevel"] = 0;
-                    break;
-                case var exp when (baseStat["wis"] >= 9):
-                    statBonuses["mpPerLevel"] = -1;
-                    break;
-                default:
-                    statBonuses["mpPerLevel"] = -2;
-                    break;
-            }
             switch (baseStat["int"]) // CALCULATE magic bonus
             {
                 case var exp when (baseStat["int"] >= 36):
-                    statBonuses["magicBonus"] = 11;
-                    break;
+                    return 11;
                 case var exp when (baseStat["int"] >= 25):
-                    statBonuses["magicBonus"] = 10;
-                    break;
+                    return 10;
                 case var exp when (baseStat["int"] >= 17):
-                    statBonuses["magicBonus"] = baseStat["int"] - 15;
-                    break;
+                    return baseStat["int"] - 15;
                 case var exp when (baseStat["int"] >= 15):
-                    statBonuses["magicBonus"] = 2;
-                    break;
+                    return 2;
                 case var exp when (baseStat["int"] >= 12):
-                    statBonuses["magicBonus"] = 1;
-                    break;
+                    return 1;
                 case var exp when (baseStat["int"] >= 9):
-                    statBonuses["magicBonus"] = 0;
-                    break;
+                    return 0;
                 case var exp when (baseStat["int"] >= 6):
-                    statBonuses["magicBonus"] = -1;
-                    break;
+                    return -1;
                 case var exp when (baseStat["int"] >= 3):
-                    statBonuses["magicBonus"] = -2;
-                    break;
+                    return -2;
                 default:
-                    statBonuses["magicBonus"] = -3;
-                    break;
+                    return -3;
             }
+        }
 
+        public int CalcMpPerLevel() //calculates general stat bonuses
+        {
+            return statBonusChart.GetMpFromWis(baseStat["wis"], mpModifier);
         }
 
         public void RaiseStat(string stat, string dir)
@@ -422,13 +415,17 @@ namespace LinStats
         public void LevelUp()
         {
             hp += GetHpPerLevel();
+            mp += GetMpPerLevel();
 
             if(hp > maxHp)
             {
                 hp = maxHp;
             }
 
-            CalcMagicLevel();
+            if(mp > maxMp)
+            {
+                mp = maxMp;
+            }
 
             if (highestLevel == level && level >= 50)
             {
@@ -449,10 +446,16 @@ namespace LinStats
             {
                 level--;
                 hp -= GetHpPerLevel();
+                mp -= GetMpPerLevel();
                 
                 if(hp < 1)
                 {
                     hp = 1;
+                }
+
+                if(mp < 1)
+                {
+                    mp = 1;
                 }
             }
         }
@@ -1616,6 +1619,7 @@ namespace LinStats
                 hitFromLevel = 3;
                 maxHp = 2000;
                 maxMp = 600;
+                mpModifier = .66f;
             }
         }
 
@@ -1654,6 +1658,7 @@ namespace LinStats
                 erFromLevel = 10;
                 maxHp = 1000;
                 maxMp = 1200;
+                mpModifier = 2;
             }
         }
 
@@ -1693,6 +1698,7 @@ namespace LinStats
                 hitFromLevel = 5;
                 maxHp = 1400;
                 maxMp = 900;
+                mpModifier = 1.5f;
             }
         }
 
@@ -1731,6 +1737,7 @@ namespace LinStats
                 hitFromLevel = 5;
                 maxHp = 1400;
                 maxMp = 800;
+                mpModifier = 1;
             }
         }
 
@@ -1770,6 +1777,7 @@ namespace LinStats
                 hitFromLevel = 3;
                 maxHp = 1400;
                 maxMp = 900;
+                mpModifier = 1.5f;
             }
         }
 
@@ -1808,6 +1816,7 @@ namespace LinStats
                 hitFromLevel = 5;
                 maxHp = 1200;
                 maxMp = 1100;
+                mpModifier = 1.6f;
             }
         }
 
@@ -1845,6 +1854,7 @@ namespace LinStats
                 erFromLevel = 7;
                 hitFromLevel = 3;
                 maxHp = 1800;
+                mpModifier = .66f;
             }
         }
     }

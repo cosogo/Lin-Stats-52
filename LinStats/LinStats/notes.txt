@@ -1,5 +1,6 @@
 ﻿TO DO / FIX:
- - hpregen, mpPerLevel, magicBonus from CalcBonus function
+ - magicHit, weightCap formula is likely wrong, magicCrit, sp calculation is likely wrong,
+ -  knights and DKs get 0 MP level ups always
  - document each stat bonus and verify it is correct
  - implement import/export
  - look into incorporating gear

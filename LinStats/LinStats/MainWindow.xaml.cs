@@ -50,7 +50,6 @@ namespace LinStats
         public void RedrawWindow() // redraws the right window to output player stats
         {
             if(player != null) {
-                player.CalcStatBonus();
                 this.DisplayField = player.OutputStats();
             } else
             {

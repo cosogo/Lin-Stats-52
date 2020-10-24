@@ -15,6 +15,7 @@ namespace LinStats
         private readonly int[,] strDexChart = new int[MAXSTAT, 5];
         private readonly int[,] mpDiscountChart = new int[16, 10];
         private readonly int[] mrChart = new int[MAXSTAT];
+        private readonly int[,] mpChart = new int[36,2];
 
         public int GetErFromDex(int dex)
         {
@@ -116,6 +117,25 @@ namespace LinStats
             }
 
             return mrChart[wis];
+        }
+
+        public int GetMpFromWis(int wis, float modifier)
+        {
+            float mpGain;
+
+            if(wis > 35)
+            {
+                wis = 35;
+            } else if (wis < 0)
+            {
+                wis = 0;
+            }
+
+            Random rnd = new Random();
+
+            mpGain = rnd.Next(0, mpChart[wis, 0]) + mpChart[wis, 1];
+
+            return (int)(mpGain * modifier);
         }
 
             public BonusChart()
@@ -269,6 +289,7 @@ namespace LinStats
                     { 60, 17, 28, 18, 16 }
             };
 
+            //mr based off wis
             mrChart[0] = 0;
             mrChart[1] = 0;
             mrChart[2] = 0;
@@ -331,8 +352,46 @@ namespace LinStats
             mrChart[59] = 50;
             mrChart[60] = 50;
 
-
-
+            //mp per level based on wis. mp per level = range(0, col0) + col1
+            mpChart = new int[36, 2] {
+                { 2, 0 },
+                { 2, 0 },
+                { 2, 0 },
+                { 2, 0 },
+                { 2, 0 },
+                { 2, 0 },
+                { 2, 0 },
+                { 2, 0 },
+                { 2, 0 },
+                { 2, 0 },
+                { 1, 1 },
+                { 1, 1 },
+                { 2, 1 },
+                { 2, 1 },
+                { 2, 1 },
+                { 2, 2 },
+                { 2, 2 },
+                { 2, 2 },
+                { 3, 2 },
+                { 3, 2 },
+                { 3, 2 },
+                { 3, 3 },
+                { 3, 3 },
+                { 3, 3 },
+                { 4, 3 },
+                { 3, 4 },
+                { 3, 4 },
+                { 4, 4 },
+                { 4, 4 },
+                { 3, 5 },
+                { 3, 5 },
+                { 4, 5 },
+                { 4, 5 },
+                { 3, 6 },
+                { 3, 6 },
+                { 4, 6 },
+            };
+            
         }
     }
 }
