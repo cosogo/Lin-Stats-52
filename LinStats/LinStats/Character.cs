@@ -1564,6 +1564,11 @@ namespace LinStats
                                 "\nMR: " + GetMr() +
                                 "\nER: " + GetEr() +
                                 "\n" +
+                                "\nHP Per Level: " + GetHpPerLevel() + " (" + baseStatBonuses["hpPerLevel"] + ")" +
+                                "\nMP Per Level: " + GetMpPerLevel() + " (" + baseStatBonuses["mpPerLevel"] + ")" +
+                                "\nHP Regen: " + GetHpRegen() + " (" + baseStatBonuses["hpRegen"] + ")" +
+                                "\nMP Regen: " + GetMpRegen() + " (" + baseStatBonuses["mpRegen"] + ")" +
+                                "\n" +
                                 "\n---STAT BONUSES---" +
                                 "\nMelee Damage: " + GetMeleeDamage() + " (" + baseStatBonuses["meleeDamage"] + ")" +
                                 "\nMelee Hit: " + GetMeleeHit() + " (" + baseStatBonuses["meleeHit"] + ")" +
@@ -1572,13 +1577,10 @@ namespace LinStats
                                 "\n\nMagic Crit Chance: " + GetMagicCrit() + " (" + baseStatBonuses["magicCrit"] + ")" +
                                 "\nMP Discount: " + GetMpDiscount() + " (" + baseStatBonuses["mpDiscount"] + ")" +
                                 "\nMagic Hit: " + GetMagicHit() + " (" + baseStatBonuses["magicHit"] + ")" +
-                                "\nMP Regen: " + GetMpRegen() + " (" + baseStatBonuses["mpRegen"] + ")" +
                                 "\nMagic Bonus: " + GetMagicBonus() + " (" + baseStatBonuses["magicBonus"] + ")" +
                                 "\nSpell Power: " + GetSp() + " (" + baseStatBonuses["sp"] + ")" +
-                                "\nMagic Level: " + GetMagicLevel() + 
-                                "\n\nWeight Cap: " + GetWeightCap() + " (" + baseStatBonuses["weightCap"] + ")" +
-                                "\nHP Per Level: " + GetHpPerLevel() + " (" + baseStatBonuses["hpPerLevel"] + ")" +
-                                "\nHP Regen: " + GetHpRegen() + " (" + baseStatBonuses["hpRegen"] + ")";
+                                "\nMagic Level: " + GetMagicLevel() +
+                                "\n\nWeight Cap: " + GetWeightCap() + " (" + baseStatBonuses["weightCap"] + ")";
 
 
             return outputText;
