@@ -379,7 +379,7 @@ namespace LinStats
 
         public int CalcMpPerLevel() //calculates general stat bonuses
         {
-            return statBonusChart.GetMpFromWis(baseStat["wis"], mpModifier);
+            return statBonusChart.GetMpFromWis(baseStat["wis"], role);
         }
 
         public void RaiseStat(string stat, string dir)
@@ -1623,7 +1623,6 @@ namespace LinStats
                 hitFromLevel = 3;
                 maxHp = 2000;
                 maxMp = 600;
-                mpModifier = .66f;
             }
         }
 
@@ -1662,7 +1661,6 @@ namespace LinStats
                 erFromLevel = 10;
                 maxHp = 1000;
                 maxMp = 1200;
-                mpModifier = 2;
             }
         }
 
@@ -1702,7 +1700,6 @@ namespace LinStats
                 hitFromLevel = 5;
                 maxHp = 1400;
                 maxMp = 900;
-                mpModifier = 1.5f;
             }
         }
 
@@ -1741,7 +1738,6 @@ namespace LinStats
                 hitFromLevel = 5;
                 maxHp = 1400;
                 maxMp = 800;
-                mpModifier = 1;
             }
         }
 
@@ -1781,7 +1777,6 @@ namespace LinStats
                 hitFromLevel = 3;
                 maxHp = 1400;
                 maxMp = 900;
-                mpModifier = 1.5f;
             }
         }
 
@@ -1820,7 +1815,6 @@ namespace LinStats
                 hitFromLevel = 5;
                 maxHp = 1200;
                 maxMp = 1100;
-                mpModifier = 1.6f;
             }
         }
 
@@ -1858,7 +1852,6 @@ namespace LinStats
                 erFromLevel = 7;
                 hitFromLevel = 3;
                 maxHp = 1800;
-                mpModifier = .66f;
             }
         }
     }

@@ -120,9 +120,10 @@ namespace LinStats
             return mrChart[wis];
         }
 
-        public int GetMpFromWis(int wis, float modifier)
+        public int GetMpFromWis(int wis, string role)
         {
             float mpGain;
+            int finalMpGain = 0;
 
             if(wis > 35)
             {
@@ -134,10 +135,44 @@ namespace LinStats
 
             Random rnd = new Random();
 
-            mpGain = rnd.Next(0, mpChart[wis, 0] + 1);
-            //mpGain = mpGain * modifier;
+            mpGain = rnd.Next(0, mpChart[wis, 0]) + 1 + mpChart[wis,1];
 
-            return (int)(mpGain);
+            if (role == "Royal")
+            {
+                mpGain += wis >= 16 ? 1 : 0;
+                finalMpGain = (int)(mpGain);
+            }
+            else if (role == "Elf")
+            {
+                mpGain += wis >= 17 ? 2 : wis >= 14 ? 1 : 0;
+                finalMpGain = (int)(mpGain * 1.5);
+            }
+            else if (role == "Wizard")
+            {
+                mpGain += wis >= 17 ? 2 : wis >= 13 ? 1 : 0;
+                finalMpGain = (int)(mpGain * 2);
+            }
+            else if (role == "Dark Elf")
+            {
+                mpGain += wis >= 12 ? 1 : 0;
+                finalMpGain = (int)(mpGain * 1.5);
+            }
+            else if (role == "Dragon Knight")
+            {
+                mpGain += wis >= 16 ? 2 : wis >= 13 ? 1 : 0;
+                finalMpGain = (int)(mpGain * 2 / 3);
+            }
+            else if (role == "Illusionist")
+            {
+                mpGain += wis >= 16 ? 2 : wis >= 13 ? 1 : 0;
+                finalMpGain = (int)(mpGain * 5 / 3);
+            } 
+            else if (role == "Knight")
+            {
+                finalMpGain = (int)(mpGain * 2 / 3);
+            }
+
+            return finalMpGain;
         }
 
             public BonusChart()
@@ -356,42 +391,42 @@ namespace LinStats
 
             //mp per level based on wis. mp per level = range(0, col0) + col1
             mpChart = new int[36, 2] {
-                { 2, 0 },
-                { 2, 0 },
-                { 2, 0 },
-                { 2, 0 },
-                { 2, 0 },
-                { 2, 0 },
-                { 2, 0 },
-                { 2, 0 },
-                { 2, 0 },
-                { 2, 0 },
-                { 1, 1 },
-                { 1, 1 },
-                { 2, 1 },
-                { 2, 1 },
-                { 2, 1 },
-                { 2, 2 },
-                { 2, 2 },
-                { 2, 2 },
-                { 3, 2 },
-                { 3, 2 },
-                { 3, 2 },
-                { 3, 3 },
-                { 3, 3 },
-                { 3, 3 },
-                { 4, 3 },
-                { 3, 4 },
-                { 3, 4 },
-                { 4, 4 },
-                { 4, 4 },
-                { 3, 5 },
-                { 3, 5 },
-                { 4, 5 },
-                { 4, 5 },
-                { 3, 6 },
-                { 3, 6 },
-                { 4, 6 },
+                { 2, 0 }, //0
+                { 2, 0 }, //1
+                { 2, 0 }, //2
+                { 2, 0 }, //3
+                { 2, 0 }, //4
+                { 2, 0 }, //5
+                { 2, 0 }, //6
+                { 2, 0 }, //7
+                { 2, 0 }, //8
+                { 3, 0 }, //9
+                { 2, 1 }, //10
+                { 2, 1 }, //11
+                { 3, 1 }, //12
+                { 3, 1 }, //13
+                { 3, 1 }, //14
+                { 3, 2 }, //15
+                { 3, 2 }, //16
+                { 3, 2 }, //17
+                { 4, 2 }, //18
+                { 4, 2 }, //19
+                { 4, 2 }, //20
+                { 4, 3 }, //21
+                { 4, 3 }, //22
+                { 4, 3 }, //23
+                { 5, 3 }, //24
+                { 4, 4 }, //25
+                { 4, 4 }, //26
+                { 5, 4 }, //27
+                { 5, 4 }, //28
+                { 4, 5 }, //29
+                { 4, 5 }, //30
+                { 5, 5 }, //31
+                { 5, 5 }, //32
+                { 4, 6 }, //33
+                { 4, 6 }, //34
+                { 5, 6 }, //35
             };
             
         }
