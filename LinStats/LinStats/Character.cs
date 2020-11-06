@@ -166,7 +166,7 @@ namespace LinStats
 
         public int GetHpPerLevel()
         {
-            return baseHpPerLevel + CalcHpPerLevel() + baseStatBonuses["hpPerLevel"];
+            return CalcHpPerLevel() + baseStatBonuses["hpPerLevel"];
         }
 
         public int GetMpPerLevel()
@@ -322,16 +322,18 @@ namespace LinStats
 
         public int CalcHpPerLevel()
         {
-            if(baseStat["con"] >= 40)
-            {
-                return 25;
-            } else if (baseStat["con"] >= 16)
-            {
-                return (baseStat["con"] - 16) + 1;
-            } else
-            {
-                return 0;
+            int hpUp = 0;
+            Random rand = new Random();
+
+            if(baseStat["con"] >= 40){
+                hpUp = 25;
+            } else if (baseStat["con"] > 15){
+                hpUp = (baseStat["con"] - 15); 
             }
+
+            hpUp += rand.Next(0, 3) + baseHpPerLevel;
+
+            return hpUp;
         }
 
         public int CalcHpRegen() { 
@@ -1615,7 +1617,7 @@ namespace LinStats
                 maxBase["wis"] = 13;
                 maxBase["cha"] = 16;
 
-                baseHpPerLevel = 16;
+                baseHpPerLevel = 17;
                 baseMr = 0;
                 erFromLevel = 4;
                 hitFromLevel = 3;
@@ -1655,7 +1657,7 @@ namespace LinStats
                 maxBase["wis"] = 18;
                 maxBase["cha"] = 18;
 
-                baseHpPerLevel = 6;
+                baseHpPerLevel = 7;
                 baseMr = 15;
                 erFromLevel = 10;
                 maxHp = 1000;
@@ -1694,7 +1696,7 @@ namespace LinStats
                 maxBase["wis"] = 18;
                 maxBase["cha"] = 16;
 
-                baseHpPerLevel = 9;
+                baseHpPerLevel = 10;
                 baseMr = 25;
                 erFromLevel = 8;
                 hitFromLevel = 5;
@@ -1733,7 +1735,7 @@ namespace LinStats
                 maxBase["wis"] = 18;
                 maxBase["cha"] = 18;
 
-                baseHpPerLevel = 10;
+                baseHpPerLevel = 11;
                 baseMr = 10;
                 erFromLevel = 8;
                 hitFromLevel = 5;
@@ -1773,7 +1775,7 @@ namespace LinStats
                 maxBase["wis"] = 18;
                 maxBase["cha"] = 18;
 
-                baseHpPerLevel = 9;
+                baseHpPerLevel = 10;
                 baseMr = 10;
                 erFromLevel = 6;
                 hitFromLevel = 3;
@@ -1812,7 +1814,7 @@ namespace LinStats
                 maxBase["wis"] = 18;
                 maxBase["cha"] = 18;
 
-                baseHpPerLevel = 5;
+                baseHpPerLevel = 9;
                 baseMr = 20;
                 erFromLevel = 9;
                 hitFromLevel = 5;

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Markup;
 
 namespace LinStats
 {
@@ -133,9 +134,10 @@ namespace LinStats
 
             Random rnd = new Random();
 
-            mpGain = rnd.Next(0, mpChart[wis, 0]) + mpChart[wis, 1];
+            mpGain = rnd.Next(0, mpChart[wis, 0] + 1);
+            //mpGain = mpGain * modifier;
 
-            return (int)(mpGain * modifier);
+            return (int)(mpGain);
         }
 
             public BonusChart()
