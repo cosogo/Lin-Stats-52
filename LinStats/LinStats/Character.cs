@@ -90,19 +90,23 @@ namespace LinStats
         {
             int ac = 10;
 
-            if(baseStat["dex"] < 10)
+            if (baseStat["dex"] <= 9)
             {
-                ac -= level / 8; 
-            } else if (baseStat["dex"] < 13)
+                ac -= level / 8;
+            }
+            else if (baseStat["dex"] <= 12)
             {
                 ac -= level / 7;
-            } else if (baseStat["dex"] < 16)
+            }
+            else if (baseStat["dex"] <= 15)
             {
                 ac -= level / 6;
-            } else if (baseStat["dex"] < 18)
+            }
+            else if (baseStat["dex"] <= 17)
             {
                 ac -= level / 5;
-            } else
+            }
+            else
             {
                 ac -= level / 4;
             }
@@ -316,7 +320,7 @@ namespace LinStats
                 return 0;
             } else
             {
-                return 10;
+                return level/10;
             }
         }
 
@@ -416,8 +420,35 @@ namespace LinStats
 
         public void LevelUp()
         {
-            hp += GetHpPerLevel();
-            mp += GetMpPerLevel();
+            if(level == 1)
+            {
+                if(role == "Knight")
+                {
+                    hp = 16;
+                } else if (role == "Royal")
+                {
+                    hp = 14;
+                } else if (role == "Elf")
+                {
+                    hp = 15;
+                } else if (role == "Wizard")
+                {
+                    hp = 12;
+                } else if (role == "Dark Elf")
+                {
+                    hp = 12;
+                } else if (role == "Dragon Knight")
+                {
+                    hp = 15;
+                } else if (role == "Illusionist")
+                {
+                    hp = 15;
+                }
+            } else
+            {
+                hp += GetHpPerLevel();
+                mp += GetMpPerLevel();
+            }
 
             if(hp > maxHp)
             {
