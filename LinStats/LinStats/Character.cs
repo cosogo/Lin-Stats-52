@@ -358,26 +358,53 @@ namespace LinStats
 
         public int CalcMagicBonus()
         {
-            switch (baseStat["int"]) // CALCULATE magic bonus
+
+            // copied this if switch from l1j src code because I am lazy
+            int i = baseStat["int"];
+
+            if (i <= 5)
             {
-                case var exp when (baseStat["int"] >= 36):
-                    return 11;
-                case var exp when (baseStat["int"] >= 25):
-                    return 10;
-                case var exp when (baseStat["int"] >= 17):
-                    return baseStat["int"] - 15;
-                case var exp when (baseStat["int"] >= 15):
-                    return 2;
-                case var exp when (baseStat["int"] >= 12):
-                    return 1;
-                case var exp when (baseStat["int"] >= 9):
-                    return 0;
-                case var exp when (baseStat["int"] >= 6):
-                    return -1;
-                case var exp when (baseStat["int"] >= 3):
-                    return -2;
-                default:
-                    return -3;
+                return -2;
+            }
+            else if (i <= 8)
+            {
+                return -1;
+            }
+            else if (i <= 11)
+            {
+                return 0;
+            }
+            else if (i <= 14)
+            {
+                return 1;
+            }
+            else if (i <= 17)
+            {
+                return 2;
+            }
+            else if (i <= 24)
+            {
+                return i - 15;
+            }
+            else if (i <= 35)
+            {
+                return 10;
+            }
+            else if (i <= 42)
+            {
+                return 11;
+            }
+            else if (i <= 49)
+            {
+                return 12;
+            }
+            else if (i <= 50)
+            {
+                return 13;
+            }
+            else
+            {
+                return i - 25;
             }
         }
 
@@ -425,26 +452,97 @@ namespace LinStats
                 if(role == "Knight")
                 {
                     hp = 16;
-                } else if (role == "Royal")
+
+                    if (baseStat["Wis"] >= 13)
+                    {
+                        mp = 2;
+                    }
+                    else
+                    {
+                        mp = 1;
+                    }
+                } 
+                else if (role == "Royal")
                 {
                     hp = 14;
-                } else if (role == "Elf")
+
+                    if(baseStat["wis"] >= 15)
+                    {
+                        mp = 3;
+                    } else if (baseStat["wis"] == 18)
+                    {
+                        mp = 4;
+                    } else
+                    {
+                        mp = 2;
+                    }
+                } 
+                else if (role == "Elf")
                 {
                     hp = 15;
-                } else if (role == "Wizard")
+
+                    if (baseStat["wis"] == 18)
+                    {
+                        mp = 6;
+                    } else
+                    {
+                        mp = 4;
+                    }
+                } 
+                else if (role == "Wizard")
                 {
                     hp = 12;
-                } else if (role == "Dark Elf")
+
+                    if (baseStat["wis"] == 18)
+                    {
+                        mp = 8;
+                    } else
+                    {
+                        mp = 6;
+                    }
+                } 
+                else if (role == "Dark Elf")
                 {
                     hp = 12;
-                } else if (role == "Dragon Knight")
+
+                    if (baseStat["wis"] >= 15)
+                    {
+                        mp = 4;
+                    }
+                    else if (baseStat["wis"]  == 18)
+                    {
+                        mp = 6;
+                    } else
+                    {
+                        mp = 3;
+                    }
+                } 
+                else if (role == "Dragon Knight")
                 {
                     hp = 15;
-                } else if (role == "Illusionist")
+
+                    if (baseStat["wis"] == 18)
+                    {
+                        mp = 6;
+                    } else
+                    {
+                        mp = 4;
+                    }
+                } 
+                else if (role == "Illusionist")
                 {
                     hp = 15;
+
+                    if (baseStat["wis"] == 18)
+                    {
+                        mp = 6;
+                    } else
+                    {
+                        mp = 4;
+                    }
                 }
-            } else
+            } 
+            else
             {
                 hp += GetHpPerLevel();
                 mp += GetMpPerLevel();
