@@ -185,7 +185,7 @@ namespace LinStats
 
         public int GetMagicCrit()
         {
-            return baseStatBonuses["magicCrit"];
+            return (10 + baseStatBonuses["magicCrit"]);
         }
 
         public int GetRangedHit()
@@ -1705,7 +1705,7 @@ namespace LinStats
                                 "\nMelee Hit: " + GetMeleeHit() + " (" + baseStatBonuses["meleeHit"] + ")" +
                                 "\n\nRanged Damage: " + GetRangedDamage() + " (" + baseStatBonuses["rangedDamage"] + ")" +
                                 "\nRanged Hit: " + GetRangedHit() + " (" + baseStatBonuses["rangedHit"] + ")" +
-                                "\n\nMagic Crit Chance: " + GetMagicCrit() + " (" + baseStatBonuses["magicCrit"] + ")" +
+                                "\n\nMagic Crit Chance: " + GetMagicCrit() + "% (" + baseStatBonuses["magicCrit"] + ")" +
                                 "\nMP Discount: " + GetMpDiscount() + " (" + baseStatBonuses["mpDiscount"] + ")" +
                                 "\nMagic Hit: " + GetMagicHit() + " (" + baseStatBonuses["magicHit"] + ")" +
                                 "\nMagic Bonus: " + GetMagicBonus() + " (" + baseStatBonuses["magicBonus"] + ")" +
