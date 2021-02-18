@@ -6,11 +6,22 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Markup;
 
+/**
+* role variable: 
+* 1 = royal, 
+* 2 = elf, 
+* 3 = wizard, 
+* 4 = dark elf, 
+* 5 = dragon knight, 
+* 6 = illu, 
+* 7 = knight
+*/
+
 namespace LinStats
 {
     public class BonusChart
     {
-        public const int MAXSTAT = 61;
+        private const int MAXSTAT = 61;
 
         private readonly int[] erChart = new int[MAXSTAT];
         private readonly int[,] strDexChart = new int[MAXSTAT, 5];
@@ -18,15 +29,45 @@ namespace LinStats
         private readonly int[] mrChart = new int[MAXSTAT];
         private readonly int[,] mpChart = new int[36,2];
 
-        public int GetErFromDex(int dex)
+        public int GetEr(int dex, int role, int level)
         {
+            int erPerLevel;
+
             if (dex < 0){
                 dex = 0;
             } else if (dex > 60){
                 dex = 60;
             }
 
-            return erChart[dex];
+            switch (role)
+            {
+                case 1:
+                    erPerLevel = 8;
+                    break;
+                case 2:
+                    erPerLevel = 8;
+                    break;
+                case 3:
+                    erPerLevel = 10;
+                    break;
+                case 4:
+                    erPerLevel = 6;
+                    break;
+                case 5:
+                    erPerLevel = 7;
+                    break;
+                case 6:
+                    erPerLevel = 9;
+                    break;
+                case 7:
+                    erPerLevel = 4;
+                    break;
+                default:
+                    erPerLevel = 0;
+                    break;
+            }
+
+            return erChart[dex] + erPerLevel;
         }
 
         public int GetMpDiscount(int magicLevel, int intelligence)
@@ -107,8 +148,11 @@ namespace LinStats
             return strDexChart[dex, 2];
         }
 
-        public int GetMrFromWis(int wis)
+        public int GetMr(int wis, int role, int level)
         {
+            int mrFromRole = 0;
+            int mrFromLevel = 0;
+
             if (wis < 0)
             {
                 wis = 0;
@@ -117,10 +161,41 @@ namespace LinStats
                 wis = 60;
             }
 
-            return mrChart[wis];
+            if (role == 1)
+            {
+                mrFromRole = 10;
+            }
+            else if (role == 2)
+            {
+                mrFromRole = 25;
+            }
+            else if (role == 3)
+            {
+                mrFromRole = 15;
+            }
+            else if (role == 4)
+            {
+                mrFromRole = 10;
+            }
+            else if (role == 5)
+            {
+                mrFromRole = 18;
+            }
+            else if (role == 6)
+            {
+                mrFromRole = 20;
+            }
+            else if (role == 7)
+            {
+                mrFromRole = 0;
+            }
+
+            mrFromLevel = level / 2;
+
+            return mrChart[wis] + mrFromRole + mrFromLevel;
         }
 
-        public int GetMpFromWis(int wis, string role)
+        public int GetMpPerLevel(int wis, int role)
         {
             float mpGain;
             int finalMpGain = 0;
@@ -137,42 +212,319 @@ namespace LinStats
 
             mpGain = rnd.Next(0, mpChart[wis, 0]) + 1 + mpChart[wis,1];
 
-            if (role == "Royal")
+            if (role == 1)
             {
                 mpGain += wis >= 16 ? 1 : 0;
                 finalMpGain = (int)(mpGain);
             }
-            else if (role == "Elf")
+            else if (role == 2)
             {
                 mpGain += wis >= 17 ? 2 : wis >= 14 ? 1 : 0;
                 finalMpGain = (int)(mpGain * 1.5);
             }
-            else if (role == "Wizard")
+            else if (role == 3)
             {
                 mpGain += wis >= 17 ? 2 : wis >= 13 ? 1 : 0;
                 finalMpGain = (int)(mpGain * 2);
             }
-            else if (role == "Dark Elf")
+            else if (role == 4)
             {
                 mpGain += wis >= 12 ? 1 : 0;
                 finalMpGain = (int)(mpGain * 1.5);
             }
-            else if (role == "Dragon Knight")
+            else if (role == 5)
             {
                 mpGain += wis >= 16 ? 2 : wis >= 13 ? 1 : 0;
                 finalMpGain = (int)(mpGain * 2 / 3);
             }
-            else if (role == "Illusionist")
+            else if (role == 6)
             {
                 mpGain += wis >= 16 ? 2 : wis >= 13 ? 1 : 0;
                 finalMpGain = (int)(mpGain * 5 / 3);
             } 
-            else if (role == "Knight")
+            else if (role == 7)
             {
                 finalMpGain = (int)(mpGain * 2 / 3);
             }
 
             return finalMpGain;
+        }
+
+        public int getMpRegen(int wis)
+        {
+            if (wis < 14)
+            {
+                return 0;
+            }
+            else if (wis == 14)
+            {
+                return 1;
+            }
+            else if (wis == 15 || wis == 16)
+            {
+                return 2;
+            }
+            else
+            {
+                return 3;
+            }
+        }
+
+        public int GetHitFromDexStr(int dex, int str) 
+        {
+            return GetHitFromDex(dex) + GetHitFromStr(str);
+        }
+
+        public int GetAcFromDex(int dex, int level)
+        {
+            int ac = 10;
+
+            if (dex <= 9)
+            {
+                ac -= level / 8;
+            }
+            else if (dex <= 12)
+            {
+                ac -= level / 7;
+            }
+            else if (dex <= 15)
+            {
+                ac -= level / 6;
+            }
+            else if (dex <= 17)
+            {
+                ac -= level / 5;
+            }
+            else
+            {
+                ac -= level / 4;
+            }
+
+            return ac;
+        }
+
+        public int GetHitPerLevel(int level, int role)
+        {
+            /**
+            * role variable: 
+            * 1 = royal, 
+            * 2 = elf, 
+            * 3 = wizard, 
+            * 4 = dark elf, 
+            * 5 = dragon knight, 
+            * 6 = illu, 
+            * 7 = knight
+            */
+
+            int hpl = 0;
+
+            switch (role)
+            {
+                case 1:
+                    return level / 5;
+                case 2:
+                    return level / 5;
+                case 3:
+                    return 0;
+                case 4:
+                    return level / 3;
+                case 5:
+                    return level / 3;
+                case 6:
+                    return level / 5;
+                case 7:
+                    return level / 3;
+                default:
+                    break;
+            }
+
+            if(role == 3)
+            {
+                return 0;
+            }
+
+            if(role == 7)
+            {
+                hpl = level / 3;
+            }
+
+            return hpl;
+
+
+        }
+
+        public int GetMeleeDmgPerLevel(int str, int level, int role)
+        {
+            if (role == 0 || role == 1 || role == 2|| role == 3 || role == 6)
+            {
+                return 0;
+            } else
+            {
+                return level / 10;
+            }
+        }
+
+        public int GetRangedDmgPerLevel(int level, int role)
+        {
+            if(role == 2)
+            {
+                return level / 10;
+            } else
+            {
+                return 0;
+            }
+        }
+
+        public int GetMagicLevel(int role, int level)
+        {
+            int magicLevel = 0;
+
+            if (role == 7)
+            {
+                magicLevel = level / 50;
+                if (magicLevel > 1)
+                {
+                    magicLevel = 1;
+                }
+            }
+            else if (role == 3)
+            {
+                magicLevel = level / 4;
+                if (magicLevel > 10)
+                {
+                    magicLevel = 10;
+                }
+            }
+            else if (role == 2)
+            {
+                magicLevel = level / 8;
+                if (magicLevel > 6)
+                {
+                    magicLevel = 6;
+                }
+
+            }
+            else if (role == 1)
+            {
+                magicLevel = level / 10;
+                if (magicLevel > 2)
+                {
+                    magicLevel = 2;
+                }
+            }
+            else if (role == 4)
+            {
+                magicLevel = level / 12;
+                if (magicLevel > 2)
+                {
+                    magicLevel = 2;
+                }
+            }
+            else if (role == 5)
+            {
+                magicLevel = level / 15;
+                if (magicLevel > 3)
+                {
+                    magicLevel = 3;
+                }
+            }
+            else if (role == 6)
+            {
+                magicLevel = level / 10;
+                if (magicLevel > 4)
+                {
+                    magicLevel = 4;
+                }
+            }
+
+            return magicLevel;
+        }
+
+        public int GetMagicBonus(int intelligence)
+        {
+            // copied this if switch from l1j src code because I am lazy
+            int i = intelligence;
+
+            if (i <= 5)
+            {
+                return -2;
+            }
+            else if (i <= 8)
+            {
+                return -1;
+            }
+            else if (i <= 11)
+            {
+                return 0;
+            }
+            else if (i <= 14)
+            {
+                return 1;
+            }
+            else if (i <= 17)
+            {
+                return 2;
+            }
+            else if (i <= 24)
+            {
+                return i - 15;
+            }
+            else if (i <= 35)
+            {
+                return 10;
+            }
+            else if (i <= 42)
+            {
+                return 11;
+            }
+            else if (i <= 49)
+            {
+                return 12;
+            }
+            else if (i <= 50)
+            {
+                return 13;
+            }
+            else
+            {
+                return i - 25;
+            }
+        }
+
+        public int GetDr(int ac, int role, bool softAcOn)
+        {
+            if(softAcOn == false)
+            {
+                return ac / 2;
+            }
+
+            if(role == 7)
+            {
+                return ac / 2;
+            } else if (role == 4)
+            {
+                return ac / 4;
+            } else if (role == 1 || role == 2 || role == 5)
+            {
+                return ac / 3;
+            } else
+            {
+                return ac / 5;
+            }
+        }
+
+        public int GetWeightCap(int str, int con)
+        {
+            int weightCap;
+
+            weightCap = ((str + con + 1) / 2) * 150;
+
+            if(weightCap > 3600)
+            {
+                weightCap = 3600;
+            }
+
+            return weightCap;
         }
 
             public BonusChart()

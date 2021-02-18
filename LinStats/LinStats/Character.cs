@@ -32,7 +32,6 @@ namespace LinStats
         public int baseHpPerLevel;
         public int baseMr;
         public int erFromLevel;
-        public int hitFromLevel;
         public int maxHp;
         public int maxMp;
         public float mpModifier;
@@ -63,82 +62,75 @@ namespace LinStats
             {"rangedDamage", 0}, { "mpRegen", 0},  { "mr", 0}, { "magicCrit", 0}, { "weightCap", 0}, {"ac", 0}, {"magicLevel", 0}, {"magicBonus", 0}, {"hpPerLevel", 0}
         };
 
-        public int GetMeleeHit()
+        public int GetRoleNumber()
         {
-            int levelHit = 0;
-
-            if(role != "Wizard") // mage does not get a hit bonus from level
+            if(role == "Royal")
             {
-                levelHit = level / hitFromLevel;
+                return 1;
+            } if (role == "Elf")
+            {
+                return 2;
+            } if (role == "Wizard")
+            {
+                return 3;
+            } if (role == "Dark Elf")
+            {
+                return 4;
+            } if (role == "Dragon Knight")
+            {
+                return 5;
+            } if (role == "Illusionist")
+            {
+                return 6;
+            } if (role == "Knight")
+            {
+                return 7;
             }
 
-            return statBonusChart.GetHitFromDex(baseStat["dex"]) + statBonusChart.GetHitFromStr(baseStat["str"]) + baseStatBonuses["meleeHit"] + levelHit;
+            else return 0;
+        }
+
+        public int GetMeleeHit()
+        {
+            return 
+                statBonusChart.GetHitFromDexStr(baseStat["dex"], baseStat["str"]) + 
+                baseStatBonuses["meleeHit"] + 
+                statBonusChart.GetHitPerLevel(level, GetRoleNumber()); 
         }
 
         public int GetMeleeDamage()
         {
-            if(role == "Elf") // elf only get's a damage from level to ranged damage
-            {
-                return statBonusChart.GetDmgFromStr(baseStat["str"]) + baseStatBonuses["meleeDamage"];
-            } else
-            {
-                return statBonusChart.GetDmgFromStr(baseStat["str"]) + baseStatBonuses["meleeDamage"] + CalcDamageFromLevel(); ;
-            }
+            return 
+                statBonusChart.GetDmgFromStr(baseStat["str"]) + 
+                baseStatBonuses["meleeDamage"] + 
+                statBonusChart.GetMeleeDmgPerLevel(baseStat["str"], level, GetRoleNumber());
         }
 
         public int GetAc()
         {
-            int ac = 10;
-
-            if (baseStat["dex"] <= 9)
-            {
-                ac -= level / 8;
-            }
-            else if (baseStat["dex"] <= 12)
-            {
-                ac -= level / 7;
-            }
-            else if (baseStat["dex"] <= 15)
-            {
-                ac -= level / 6;
-            }
-            else if (baseStat["dex"] <= 17)
-            {
-                ac -= level / 5;
-            }
-            else
-            {
-                ac -= level / 4;
-            }
-
-            return ac + baseStatBonuses["ac"];
+            return 
+                statBonusChart.GetAcFromDex(baseStat["dex"], level) + 
+                baseStatBonuses["ac"];
         }
 
         public int GetDr()
         {
-            if(role == "Knight")
-            {
-                return GetAc() / 2;
-            } else if (role == "Dark Elf")
-            {
-                return GetAc() / 4;
-            } else if (role == "Dragon Knight" || role == "Elf" || role == "Royal")
-            {
-                return GetAc() / 3;
-            } else
-            {
-                return GetAc() / 5;
-            }
+            return 
+                statBonusChart.GetDr(GetAc(), GetRoleNumber(), true);
         }
 
         public int GetEr()
         {
-            return statBonusChart.GetErFromDex(baseStat["dex"]) + baseStatBonuses["er"] + (level/erFromLevel);
+            return
+                statBonusChart.GetEr(baseStat["dex"], GetRoleNumber(), level) +
+                baseStatBonuses["er"];
         }
 
         public int GetMpDiscount()
         {
-            return statBonusChart.GetMpDiscount(GetMagicLevel(), baseStat["int"]) + baseStatBonuses["mpDiscount"];
+            return 
+                statBonusChart.GetMpDiscount(GetMagicLevel(), baseStat["int"]) + 
+                baseStatBonuses["mpDiscount"];
         }
 
         public int GetMagicHit()
@@ -148,16 +140,28 @@ namespace LinStats
 
         public int GetMr()
         {
-            return baseStatBonuses["mr"] + statBonusChart.GetMrFromWis(baseStat["wis"]) + baseMr + (level/2);
+            return
+                baseStatBonuses["mr"] +
+                statBonusChart.GetMr(baseStat["wis"], GetRoleNumber(), level);
         }
 
         public int GetMpRegen()
         {
-            return CalcMpRegen() + baseStatBonuses["mpRegen"];
+            return 
+                statBonusChart.getMpRegen(baseStat["wis"]) + 
+                baseStatBonuses["mpRegen"];
         }
 
         public int GetWeightCap()
         {
+            /**
+             * 
+             * I am not using the function in the bonusChart because I will need to plug in more than one value.
+             * There was no immediately apparent way to calculate this within the bonusChart without including
+             * bonus values, which I wanted to avoid. bonusChart should stay completely independent of anything but
+             * base stats
+           */
+
             int weightTotal = ((baseStat["str"] + baseStat["con"] + baseStatBonuses["weightCap"] + 1) / 2) * 150;
 
             if(weightTotal > 3600)
@@ -170,12 +174,16 @@ namespace LinStats
 
         public int GetHpPerLevel()
         {
-            return CalcHpPerLevel() + baseStatBonuses["hpPerLevel"];
+            return 
+                CalcHpPerLevel() + 
+                baseStatBonuses["hpPerLevel"];
         }
 
         public int GetMpPerLevel()
         {
-            return baseStatBonuses["mpPerLevel"] + CalcMpPerLevel();
+            return
+                baseStatBonuses["mpPerLevel"] +
+                statBonusChart.GetMpPerLevel(baseStat["wis"], GetRoleNumber());
         }
 
         public int GetHpRegen()
@@ -190,98 +198,33 @@ namespace LinStats
 
         public int GetRangedHit()
         {
-            int levelHit = 0;
-
-            if (role != "Wizard") // mage does not get a hit bonus from level
-            {
-                levelHit = level / hitFromLevel;
-            }
-
-            return statBonusChart.GetHitFromDex(baseStat["dex"]) + statBonusChart.GetHitFromStr(baseStat["str"]) + baseStatBonuses["rangedHit"] + levelHit;
+            return 
+                statBonusChart.GetHitFromDex(baseStat["dex"]) + 
+                statBonusChart.GetHitFromStr(baseStat["str"]) + 
+                baseStatBonuses["rangedHit"] + 
+                statBonusChart.GetHitPerLevel(level, GetRoleNumber());
         }
 
         public int GetRangedDamage()
         {
-            if (role == "Elf") // elf's damage bonus from level only applies to ranged dmg
-            {
-                return statBonusChart.GetDmgFromDex(baseStat["dex"]) + baseStatBonuses["rangedDamage"] + CalcDamageFromLevel();
-            }
-            else
-            {
-                return statBonusChart.GetDmgFromDex(baseStat["dex"]) + baseStatBonuses["rangedDamage"];
-            }
-            
+            return 
+                statBonusChart.GetDmgFromDex(baseStat["dex"]) + 
+                baseStatBonuses["rangedDamage"] + 
+                statBonusChart.GetRangedDmgPerLevel(level, GetRoleNumber());   
         }
 
         public int GetMagicLevel()
         {
-            int magicLevel = 0;
-
-            if (role == "Knight")
-            {
-                magicLevel = level / 50;
-                if (magicLevel > 1)
-                {
-                    magicLevel = 1;
-                }
-            }
-            else if (role == "Wizard")
-            {
-                magicLevel = level / 4;
-                if (magicLevel > 10)
-                {
-                    magicLevel = 10;
-                }
-            }
-            else if (role == "Elf")
-            {
-                magicLevel = level / 8;
-                if (magicLevel > 6)
-                {
-                    magicLevel = 6;
-                }
-
-            }
-            else if (role == "Royal")
-            {
-                magicLevel = level / 10;
-                if (magicLevel > 2)
-                {
-                    magicLevel = 2;
-                }
-            }
-            else if (role == "Dark Elf")
-            {
-                magicLevel = level / 12;
-                if (magicLevel > 2)
-                {
-                    magicLevel = 2;
-                }
-            }
-            else if (role == "Dragon Knight")
-            {
-                magicLevel = level / 15;
-                if (magicLevel > 3)
-                {
-                    magicLevel = 3;
-                }
-            }
-            else if (role == "Illusionist")
-            {
-                magicLevel = level / 10;
-                if (magicLevel > 4)
-                {
-                    magicLevel = 4;
-                }
-            }
-
-            return magicLevel;
+            return statBonusChart.GetMagicLevel(GetRoleNumber(), level);
         }
 
         public int GetMagicBonus()
         {
-            return baseStatBonuses["magicBonus"] + CalcMagicBonus();
+            return
+                baseStatBonuses["magicBonus"] +
+                statBonusChart.GetMagicBonus(baseStat["int"]);
         }
+
         public int GetSp()
         {
             return baseStatBonuses["sp"] + GetMagicBonus() + GetMagicLevel();
@@ -293,34 +236,6 @@ namespace LinStats
             {
                 baseStat["bon"]++;
                 elixirsUsed++;
-            }
-        }
-
-        public int CalcMpRegen()
-        {
-            if(baseStat["wis"] < 14)
-            {
-                return 0;
-            } else if(baseStat["wis"] == 14)
-            {
-                return 1;
-            } else if (baseStat["wis"] == 15 || baseStat["wis"] == 16)
-            {
-                return 2;
-            } else
-            {
-                return 3;
-            }
-        }
-
-        public int CalcDamageFromLevel()
-        {
-            if (role == "Wizard" || role == "Illusionist" || role == "Royal")
-            {
-                return 0;
-            } else
-            {
-                return level/10;
             }
         }
 
@@ -354,63 +269,6 @@ namespace LinStats
             {
                 return 0;
             }
-        }
-
-        public int CalcMagicBonus()
-        {
-
-            // copied this if switch from l1j src code because I am lazy
-            int i = baseStat["int"];
-
-            if (i <= 5)
-            {
-                return -2;
-            }
-            else if (i <= 8)
-            {
-                return -1;
-            }
-            else if (i <= 11)
-            {
-                return 0;
-            }
-            else if (i <= 14)
-            {
-                return 1;
-            }
-            else if (i <= 17)
-            {
-                return 2;
-            }
-            else if (i <= 24)
-            {
-                return i - 15;
-            }
-            else if (i <= 35)
-            {
-                return 10;
-            }
-            else if (i <= 42)
-            {
-                return 11;
-            }
-            else if (i <= 49)
-            {
-                return 12;
-            }
-            else if (i <= 50)
-            {
-                return 13;
-            }
-            else
-            {
-                return i - 25;
-            }
-        }
-
-        public int CalcMpPerLevel() //calculates general stat bonuses
-        {
-            return statBonusChart.GetMpFromWis(baseStat["wis"], role);
         }
 
         public void RaiseStat(string stat, string dir)
@@ -453,7 +311,7 @@ namespace LinStats
                 {
                     hp = 16;
 
-                    if (baseStat["Wis"] >= 13)
+                    if (baseStat["wis"] >= 13)
                     {
                         mp = 2;
                     }
@@ -1749,7 +1607,6 @@ namespace LinStats
                 baseHpPerLevel = 17;
                 baseMr = 0;
                 erFromLevel = 4;
-                hitFromLevel = 3;
                 maxHp = 2000;
                 maxMp = 600;
             }
@@ -1826,7 +1683,6 @@ namespace LinStats
                 baseHpPerLevel = 10;
                 baseMr = 25;
                 erFromLevel = 8;
-                hitFromLevel = 5;
                 maxHp = 1400;
                 maxMp = 900;
             }
@@ -1864,7 +1720,6 @@ namespace LinStats
                 baseHpPerLevel = 11;
                 baseMr = 10;
                 erFromLevel = 8;
-                hitFromLevel = 5;
                 maxHp = 1400;
                 maxMp = 800;
             }
@@ -1903,7 +1758,6 @@ namespace LinStats
                 baseHpPerLevel = 10;
                 baseMr = 10;
                 erFromLevel = 6;
-                hitFromLevel = 3;
                 maxHp = 1400;
                 maxMp = 900;
             }
@@ -1941,7 +1795,6 @@ namespace LinStats
                 baseHpPerLevel = 9;
                 baseMr = 20;
                 erFromLevel = 9;
-                hitFromLevel = 5;
                 maxHp = 1200;
                 maxMp = 1100;
             }
@@ -1979,7 +1832,6 @@ namespace LinStats
                 baseHpPerLevel = 12;
                 baseMr = 18;
                 erFromLevel = 7;
-                hitFromLevel = 3;
                 maxHp = 1800;
             }
         }

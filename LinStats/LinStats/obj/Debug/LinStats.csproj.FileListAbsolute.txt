@@ -58,3 +58,18 @@ C:\Repositories\l1stat_rep\LinStats\LinStats\obj\Debug\LinStats.csproj.GenerateR
 C:\Repositories\l1stat_rep\LinStats\LinStats\obj\Debug\LinStats.csproj.CoreCompileInputs.cache
 C:\Repositories\l1stat_rep\LinStats\LinStats\obj\Debug\LinStats.exe
 C:\Repositories\l1stat_rep\LinStats\LinStats\obj\Debug\LinStats.pdb
+C:\Users\Alfredo Lorenzo\source\l1stat_rep\LinStats\LinStats\bin\Debug\LinStats.exe.config
+C:\Users\Alfredo Lorenzo\source\l1stat_rep\LinStats\LinStats\bin\Debug\LinStats.exe
+C:\Users\Alfredo Lorenzo\source\l1stat_rep\LinStats\LinStats\bin\Debug\LinStats.pdb
+C:\Users\Alfredo Lorenzo\source\l1stat_rep\LinStats\LinStats\obj\Debug\LinStats.csprojAssemblyReference.cache
+C:\Users\Alfredo Lorenzo\source\l1stat_rep\LinStats\LinStats\obj\Debug\MainWindow.g.cs
+C:\Users\Alfredo Lorenzo\source\l1stat_rep\LinStats\LinStats\obj\Debug\App.g.cs
+C:\Users\Alfredo Lorenzo\source\l1stat_rep\LinStats\LinStats\obj\Debug\LinStats_MarkupCompile.cache
+C:\Users\Alfredo Lorenzo\source\l1stat_rep\LinStats\LinStats\obj\Debug\LinStats_MarkupCompile.lref
+C:\Users\Alfredo Lorenzo\source\l1stat_rep\LinStats\LinStats\obj\Debug\MainWindow.baml
+C:\Users\Alfredo Lorenzo\source\l1stat_rep\LinStats\LinStats\obj\Debug\LinStats.g.resources
+C:\Users\Alfredo Lorenzo\source\l1stat_rep\LinStats\LinStats\obj\Debug\LinStats.Properties.Resources.resources
+C:\Users\Alfredo Lorenzo\source\l1stat_rep\LinStats\LinStats\obj\Debug\LinStats.csproj.GenerateResource.cache
+C:\Users\Alfredo Lorenzo\source\l1stat_rep\LinStats\LinStats\obj\Debug\LinStats.csproj.CoreCompileInputs.cache
+C:\Users\Alfredo Lorenzo\source\l1stat_rep\LinStats\LinStats\obj\Debug\LinStats.exe
+C:\Users\Alfredo Lorenzo\source\l1stat_rep\LinStats\LinStats\obj\Debug\LinStats.pdb
