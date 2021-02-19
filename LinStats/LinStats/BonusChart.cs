@@ -27,15 +27,18 @@ namespace LinStats
         private readonly int[,] strDexChart = new int[MAXSTAT, 5];
         private readonly int[,] mpDiscountChart = new int[16, 10];
         private readonly int[] mrChart = new int[MAXSTAT];
-        private readonly int[,] mpChart = new int[36,2];
+        private readonly int[,] mpChart = new int[36, 2];
 
         public int GetEr(int dex, int role, int level)
         {
             int erPerLevel;
 
-            if (dex < 0){
+            if (dex < 0)
+            {
                 dex = 0;
-            } else if (dex > 60){
+            }
+            else if (dex > 60)
+            {
                 dex = 60;
             }
 
@@ -156,7 +159,8 @@ namespace LinStats
             if (wis < 0)
             {
                 wis = 0;
-            } else if (wis > 60)
+            }
+            else if (wis > 60)
             {
                 wis = 60;
             }
@@ -200,17 +204,18 @@ namespace LinStats
             float mpGain;
             int finalMpGain = 0;
 
-            if(wis > 35)
+            if (wis > 35)
             {
                 wis = 35;
-            } else if (wis < 0)
+            }
+            else if (wis < 0)
             {
                 wis = 0;
             }
 
             Random rnd = new Random();
 
-            mpGain = rnd.Next(0, mpChart[wis, 0]) + 1 + mpChart[wis,1];
+            mpGain = rnd.Next(0, mpChart[wis, 0]) + 1 + mpChart[wis, 1];
 
             if (role == 1)
             {
@@ -241,7 +246,7 @@ namespace LinStats
             {
                 mpGain += wis >= 16 ? 2 : wis >= 13 ? 1 : 0;
                 finalMpGain = (int)(mpGain * 5 / 3);
-            } 
+            }
             else if (role == 7)
             {
                 finalMpGain = (int)(mpGain * 2 / 3);
@@ -270,13 +275,17 @@ namespace LinStats
             }
         }
 
-        public int GetHitFromDexStr(int dex, int str) 
+        public int GetHitFromDexStr(int dex, int str)
         {
             return GetHitFromDex(dex) + GetHitFromStr(str);
         }
 
         public int GetAcFromDex(int dex, int level)
         {
+            /*
+             * AC from dex is determined by dex
+             * min bonus is <=9, max bonus is >=18
+             */
             int ac = 10;
 
             if (dex <= 9)
@@ -305,16 +314,10 @@ namespace LinStats
 
         public int GetHitPerLevel(int level, int role)
         {
-            /**
-            * role variable: 
-            * 1 = royal, 
-            * 2 = elf, 
-            * 3 = wizard, 
-            * 4 = dark elf, 
-            * 5 = dragon knight, 
-            * 6 = illu, 
-            * 7 = knight
-            */
+            /*
+             * hit per level is decided by the class
+             * wizard does not get hit per level
+             */
 
             int hpl = 0;
 
@@ -338,12 +341,12 @@ namespace LinStats
                     break;
             }
 
-            if(role == 3)
+            if (role == 3)
             {
                 return 0;
             }
 
-            if(role == 7)
+            if (role == 7)
             {
                 hpl = level / 3;
             }
@@ -355,10 +358,15 @@ namespace LinStats
 
         public int GetMeleeDmgPerLevel(int str, int level, int role)
         {
-            if (role == 0 || role == 1 || role == 2|| role == 3 || role == 6)
+            /*
+             * some classes do not get a melee dmg per level bonus
+             */
+
+            if (role == 0 || role == 1 || role == 2 || role == 3 || role == 6)
             {
                 return 0;
-            } else
+            }
+            else
             {
                 return level / 10;
             }
@@ -366,10 +374,15 @@ namespace LinStats
 
         public int GetRangedDmgPerLevel(int level, int role)
         {
-            if(role == 2)
+            /*
+             * only elf gets ranged dmg per level bonuses
+             */
+
+            if (role == 2)
             {
                 return level / 10;
-            } else
+            }
+            else
             {
                 return 0;
             }
@@ -377,6 +390,10 @@ namespace LinStats
 
         public int GetMagicLevel(int role, int level)
         {
+            /*
+             * magicLevel max and rate are decided by class
+             */
+
             int magicLevel = 0;
 
             if (role == 7)
@@ -493,21 +510,29 @@ namespace LinStats
 
         public int GetDr(int ac, int role, bool softAcOn)
         {
-            if(softAcOn == false)
+            /*
+             * If soft ac is on, then all classes get dr = ac / 2
+             * If it is not, each class gets a specified DR divisor
+             */
+
+            if (softAcOn == false)
             {
                 return ac / 2;
             }
 
-            if(role == 7)
+            if (role == 7)
             {
                 return ac / 2;
-            } else if (role == 4)
+            }
+            else if (role == 4)
             {
                 return ac / 4;
-            } else if (role == 1 || role == 2 || role == 5)
+            }
+            else if (role == 1 || role == 2 || role == 5)
             {
                 return ac / 3;
-            } else
+            }
+            else
             {
                 return ac / 5;
             }
@@ -519,7 +544,7 @@ namespace LinStats
 
             weightCap = ((str + con + 1) / 2) * 150;
 
-            if(weightCap > 3600)
+            if (weightCap > 3600)
             {
                 weightCap = 3600;
             }
@@ -527,73 +552,120 @@ namespace LinStats
             return weightCap;
         }
 
-            public BonusChart()
-            {
-                // ER FROM DEX
-                erChart[0] = -1;
-                erChart[1] = -1;
-                erChart[2] = -1;
-                erChart[3] = -1;
-                erChart[4] = -1;
-                erChart[5] = -1;
-                erChart[6] = -1;
-                erChart[7] = 0;
-                erChart[8] = 0;
-                erChart[9] = 1;
-                erChart[10] = 1;
-                erChart[11] = 2;
-                erChart[12] = 2;
-                erChart[13] = 3;
-                erChart[14] = 3;
-                erChart[15] = 4;
-                erChart[16] = 4;
-                erChart[17] = 5;
-                erChart[18] = 5;
-                erChart[19] = 6;
-                erChart[20] = 6;
-                erChart[21] = 7;
-                erChart[22] = 7;
-                erChart[23] = 8;
-                erChart[24] = 8;
-                erChart[25] = 9;
-                erChart[26] = 9;
-                erChart[27] = 10;
-                erChart[28] = 10;
-                erChart[29] = 11;
-                erChart[30] = 11;
-                erChart[31] = 12;
-                erChart[32] = 12;
-                erChart[33] = 13;
-                erChart[34] = 13;
-                erChart[35] = 14;
-                erChart[36] = 14;
-                erChart[37] = 15;
-                erChart[38] = 15;
-                erChart[39] = 16;
-                erChart[40] = 16;
-                erChart[41] = 17;
-                erChart[42] = 17;
-                erChart[43] = 18;
-                erChart[44] = 18;
-                erChart[45] = 19;
-                erChart[46] = 19;
-                erChart[47] = 20;
-                erChart[48] = 20;
-                erChart[49] = 21;
-                erChart[50] = 21;
-                erChart[51] = 22;
-                erChart[52] = 22;
-                erChart[53] = 23;
-                erChart[54] = 23;
-                erChart[55] = 24;
-                erChart[56] = 24;
-                erChart[57] = 25;
-                erChart[58] = 25;
-                erChart[59] = 26;
-                erChart[60] = 25;
+        public int GetHpPerLevel(int con, int role)
+        {
+            int hpUp = 0;
 
-                //MP DISCOUNT (row = int, col = magic level
-                mpDiscountChart = new int[16,10] {
+            if (con >= 40) // hp bonus from con
+            {
+                hpUp += 25;
+            }
+            else if (con > 15)
+            {
+                hpUp += (con - 15);
+            }
+
+            Random rand = new Random();
+
+            if (role == 1) // hp bonus from class
+            {
+                hpUp += rand.Next(0, 3) + 11;
+            }
+            else if (role == 2)
+            {
+                hpUp += rand.Next(0, 3) + 10;
+            }
+            else if (role == 3)
+            {
+                hpUp += rand.Next(0, 3) + 7;
+            }
+            else if (role == 4)
+            {
+                hpUp += rand.Next(0, 3) + 10;
+            }
+            else if (role == 5)
+            {
+                hpUp += rand.Next(0, 3) + 12;
+            }
+            else if (role == 6)
+            {
+                hpUp += rand.Next(0, 3) + 9;
+            }
+            else if (role == 7)
+            {
+                hpUp += rand.Next(0, 3) + 17;
+            }
+
+            return hpUp;
+        }
+
+        public BonusChart()
+        {
+            // ER FROM DEX
+            erChart[0] = -1;
+            erChart[1] = -1;
+            erChart[2] = -1;
+            erChart[3] = -1;
+            erChart[4] = -1;
+            erChart[5] = -1;
+            erChart[6] = -1;
+            erChart[7] = 0;
+            erChart[8] = 0;
+            erChart[9] = 1;
+            erChart[10] = 1;
+            erChart[11] = 2;
+            erChart[12] = 2;
+            erChart[13] = 3;
+            erChart[14] = 3;
+            erChart[15] = 4;
+            erChart[16] = 4;
+            erChart[17] = 5;
+            erChart[18] = 5;
+            erChart[19] = 6;
+            erChart[20] = 6;
+            erChart[21] = 7;
+            erChart[22] = 7;
+            erChart[23] = 8;
+            erChart[24] = 8;
+            erChart[25] = 9;
+            erChart[26] = 9;
+            erChart[27] = 10;
+            erChart[28] = 10;
+            erChart[29] = 11;
+            erChart[30] = 11;
+            erChart[31] = 12;
+            erChart[32] = 12;
+            erChart[33] = 13;
+            erChart[34] = 13;
+            erChart[35] = 14;
+            erChart[36] = 14;
+            erChart[37] = 15;
+            erChart[38] = 15;
+            erChart[39] = 16;
+            erChart[40] = 16;
+            erChart[41] = 17;
+            erChart[42] = 17;
+            erChart[43] = 18;
+            erChart[44] = 18;
+            erChart[45] = 19;
+            erChart[46] = 19;
+            erChart[47] = 20;
+            erChart[48] = 20;
+            erChart[49] = 21;
+            erChart[50] = 21;
+            erChart[51] = 22;
+            erChart[52] = 22;
+            erChart[53] = 23;
+            erChart[54] = 23;
+            erChart[55] = 24;
+            erChart[56] = 24;
+            erChart[57] = 25;
+            erChart[58] = 25;
+            erChart[59] = 26;
+            erChart[60] = 25;
+
+            //MP DISCOUNT (row = int, col = magic level
+            mpDiscountChart = new int[16, 10] {
                     { 0, 0, 0 ,0 ,0 ,0 ,0, 0, 0, 0 },
                     { 0, -1, -1, -1 ,-1 , -1, -1, -1, -1, -1},
                     { 0, -1, -2, -2 ,-2 , -2, -2, -2, -2, -2},
@@ -780,7 +852,7 @@ namespace LinStats
                 { 4, 6 }, //34
                 { 5, 6 }, //35
             };
-            
+
         }
     }
 }

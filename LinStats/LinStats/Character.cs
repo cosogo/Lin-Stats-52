@@ -64,25 +64,31 @@ namespace LinStats
 
         public int GetRoleNumber()
         {
-            if(role == "Royal")
+            if (role == "Royal")
             {
                 return 1;
-            } if (role == "Elf")
+            }
+            if (role == "Elf")
             {
                 return 2;
-            } if (role == "Wizard")
+            }
+            if (role == "Wizard")
             {
                 return 3;
-            } if (role == "Dark Elf")
+            }
+            if (role == "Dark Elf")
             {
                 return 4;
-            } if (role == "Dragon Knight")
+            }
+            if (role == "Dragon Knight")
             {
                 return 5;
-            } if (role == "Illusionist")
+            }
+            if (role == "Illusionist")
             {
                 return 6;
-            } if (role == "Knight")
+            }
+            if (role == "Knight")
             {
                 return 7;
             }
@@ -92,30 +98,30 @@ namespace LinStats
 
         public int GetMeleeHit()
         {
-            return 
-                statBonusChart.GetHitFromDexStr(baseStat["dex"], baseStat["str"]) + 
-                baseStatBonuses["meleeHit"] + 
-                statBonusChart.GetHitPerLevel(level, GetRoleNumber()); 
+            return
+                statBonusChart.GetHitFromDexStr(baseStat["dex"], baseStat["str"]) +
+                baseStatBonuses["meleeHit"] +
+                statBonusChart.GetHitPerLevel(level, GetRoleNumber());
         }
 
         public int GetMeleeDamage()
         {
-            return 
-                statBonusChart.GetDmgFromStr(baseStat["str"]) + 
-                baseStatBonuses["meleeDamage"] + 
+            return
+                statBonusChart.GetDmgFromStr(baseStat["str"]) +
+                baseStatBonuses["meleeDamage"] +
                 statBonusChart.GetMeleeDmgPerLevel(baseStat["str"], level, GetRoleNumber());
         }
 
         public int GetAc()
         {
-            return 
-                statBonusChart.GetAcFromDex(baseStat["dex"], level) + 
+            return
+                statBonusChart.GetAcFromDex(baseStat["dex"], level) +
                 baseStatBonuses["ac"];
         }
 
         public int GetDr()
         {
-            return 
+            return
                 statBonusChart.GetDr(GetAc(), GetRoleNumber(), true);
         }
 
@@ -128,8 +134,8 @@ namespace LinStats
 
         public int GetMpDiscount()
         {
-            return 
-                statBonusChart.GetMpDiscount(GetMagicLevel(), baseStat["int"]) + 
+            return
+                statBonusChart.GetMpDiscount(GetMagicLevel(), baseStat["int"]) +
                 baseStatBonuses["mpDiscount"];
         }
 
@@ -147,8 +153,8 @@ namespace LinStats
 
         public int GetMpRegen()
         {
-            return 
-                statBonusChart.getMpRegen(baseStat["wis"]) + 
+            return
+                statBonusChart.getMpRegen(baseStat["wis"]) +
                 baseStatBonuses["mpRegen"];
         }
 
@@ -164,7 +170,7 @@ namespace LinStats
 
             int weightTotal = ((baseStat["str"] + baseStat["con"] + baseStatBonuses["weightCap"] + 1) / 2) * 150;
 
-            if(weightTotal > 3600)
+            if (weightTotal > 3600)
             {
                 weightTotal = 3600;
             }
@@ -174,8 +180,8 @@ namespace LinStats
 
         public int GetHpPerLevel()
         {
-            return 
-                CalcHpPerLevel() + 
+            return
+                statBonusChart.GetHpPerLevel(baseStat["con"], GetRoleNumber()) +
                 baseStatBonuses["hpPerLevel"];
         }
 
@@ -188,34 +194,37 @@ namespace LinStats
 
         public int GetHpRegen()
         {
-            return CalcHpRegen() + baseStatBonuses["hpRegen"];
+            return
+                CalcHpRegen() + baseStatBonuses["hpRegen"];
         }
 
         public int GetMagicCrit()
         {
-            return (10 + baseStatBonuses["magicCrit"]);
+            return
+                (10 + baseStatBonuses["magicCrit"]);
         }
 
         public int GetRangedHit()
         {
-            return 
-                statBonusChart.GetHitFromDex(baseStat["dex"]) + 
-                statBonusChart.GetHitFromStr(baseStat["str"]) + 
-                baseStatBonuses["rangedHit"] + 
+            return
+                statBonusChart.GetHitFromDex(baseStat["dex"]) +
+                statBonusChart.GetHitFromStr(baseStat["str"]) +
+                baseStatBonuses["rangedHit"] +
                 statBonusChart.GetHitPerLevel(level, GetRoleNumber());
         }
 
         public int GetRangedDamage()
         {
-            return 
-                statBonusChart.GetDmgFromDex(baseStat["dex"]) + 
-                baseStatBonuses["rangedDamage"] + 
-                statBonusChart.GetRangedDmgPerLevel(level, GetRoleNumber());   
+            return
+                statBonusChart.GetDmgFromDex(baseStat["dex"]) +
+                baseStatBonuses["rangedDamage"] +
+                statBonusChart.GetRangedDmgPerLevel(level, GetRoleNumber());
         }
 
         public int GetMagicLevel()
         {
-            return statBonusChart.GetMagicLevel(GetRoleNumber(), level);
+            return
+                statBonusChart.GetMagicLevel(GetRoleNumber(), level);
         }
 
         public int GetMagicBonus()
@@ -227,7 +236,8 @@ namespace LinStats
 
         public int GetSp()
         {
-            return baseStatBonuses["sp"] + GetMagicBonus() + GetMagicLevel();
+            return
+                baseStatBonuses["sp"] + GetMagicBonus() + GetMagicLevel();
         }
 
         public void UseElixir()
@@ -244,10 +254,13 @@ namespace LinStats
             int hpUp = 0;
             Random rand = new Random();
 
-            if(baseStat["con"] >= 40){
+            if (baseStat["con"] >= 40)
+            {
                 hpUp = 25;
-            } else if (baseStat["con"] > 15){
-                hpUp = (baseStat["con"] - 15); 
+            }
+            else if (baseStat["con"] > 15)
+            {
+                hpUp = (baseStat["con"] - 15);
             }
 
             hpUp += rand.Next(0, 3) + baseHpPerLevel;
@@ -255,17 +268,21 @@ namespace LinStats
             return hpUp;
         }
 
-        public int CalcHpRegen() { 
-            if(baseStat["con"] >= 37)
+        public int CalcHpRegen()
+        {
+            if (baseStat["con"] >= 37)
             {
                 return 25;
-            } else if (baseStat["con"] >= 13)
+            }
+            else if (baseStat["con"] >= 13)
             {
                 return (baseStat["con"] - 13) + 1;
-            } else  if (baseStat["con"] >= 8)
+            }
+            else if (baseStat["con"] >= 8)
             {
                 return 1;
-            } else
+            }
+            else
             {
                 return 0;
             }
@@ -305,9 +322,9 @@ namespace LinStats
 
         public void LevelUp()
         {
-            if(level == 1)
+            if (level == 1)
             {
-                if(role == "Knight")
+                if (role == "Knight")
                 {
                     hp = 16;
 
@@ -319,22 +336,24 @@ namespace LinStats
                     {
                         mp = 1;
                     }
-                } 
+                }
                 else if (role == "Royal")
                 {
                     hp = 14;
 
-                    if(baseStat["wis"] >= 15)
+                    if (baseStat["wis"] >= 15)
                     {
                         mp = 3;
-                    } else if (baseStat["wis"] == 18)
+                    }
+                    else if (baseStat["wis"] == 18)
                     {
                         mp = 4;
-                    } else
+                    }
+                    else
                     {
                         mp = 2;
                     }
-                } 
+                }
                 else if (role == "Elf")
                 {
                     hp = 15;
@@ -342,11 +361,12 @@ namespace LinStats
                     if (baseStat["wis"] == 18)
                     {
                         mp = 6;
-                    } else
+                    }
+                    else
                     {
                         mp = 4;
                     }
-                } 
+                }
                 else if (role == "Wizard")
                 {
                     hp = 12;
@@ -354,11 +374,12 @@ namespace LinStats
                     if (baseStat["wis"] == 18)
                     {
                         mp = 8;
-                    } else
+                    }
+                    else
                     {
                         mp = 6;
                     }
-                } 
+                }
                 else if (role == "Dark Elf")
                 {
                     hp = 12;
@@ -367,14 +388,15 @@ namespace LinStats
                     {
                         mp = 4;
                     }
-                    else if (baseStat["wis"]  == 18)
+                    else if (baseStat["wis"] == 18)
                     {
                         mp = 6;
-                    } else
+                    }
+                    else
                     {
                         mp = 3;
                     }
-                } 
+                }
                 else if (role == "Dragon Knight")
                 {
                     hp = 15;
@@ -382,11 +404,12 @@ namespace LinStats
                     if (baseStat["wis"] == 18)
                     {
                         mp = 6;
-                    } else
+                    }
+                    else
                     {
                         mp = 4;
                     }
-                } 
+                }
                 else if (role == "Illusionist")
                 {
                     hp = 15;
@@ -394,24 +417,25 @@ namespace LinStats
                     if (baseStat["wis"] == 18)
                     {
                         mp = 6;
-                    } else
+                    }
+                    else
                     {
                         mp = 4;
                     }
                 }
-            } 
+            }
             else
             {
                 hp += GetHpPerLevel();
                 mp += GetMpPerLevel();
             }
 
-            if(hp > maxHp)
+            if (hp > maxHp)
             {
                 hp = maxHp;
             }
 
-            if(mp > maxMp)
+            if (mp > maxMp)
             {
                 mp = maxMp;
             }
@@ -436,13 +460,13 @@ namespace LinStats
                 level--;
                 hp -= GetHpPerLevel();
                 mp -= GetMpPerLevel();
-                
-                if(hp < 1)
+
+                if (hp < 1)
                 {
                     hp = 1;
                 }
 
-                if(mp < 1)
+                if (mp < 1)
                 {
                     mp = 1;
                 }
@@ -451,7 +475,7 @@ namespace LinStats
 
         public void StatBonusCalc(string stat)
         {
-            if(initialStatsAllocated == false)
+            if (initialStatsAllocated == false)
             {
                 if (role == "Knight")
                 {
@@ -460,19 +484,19 @@ namespace LinStats
                         baseStatBonuses["meleeDamage"] = 0;
                         baseStatBonuses["meleeHit"] = 0;
 
-                        if(baseStat[stat] >= 17)
+                        if (baseStat[stat] >= 17)
                         {
                             baseStatBonuses["meleeDamage"] += 2;
                         }
-                        if(baseStat[stat] >= 18)
+                        if (baseStat[stat] >= 18)
                         {
                             baseStatBonuses["meleeHit"] += 2;
                         }
-                        if(baseStat[stat] >= 19)
+                        if (baseStat[stat] >= 19)
                         {
                             baseStatBonuses["meleeDamage"] += 2;
                         }
-                        if(baseStat[stat] == 20)
+                        if (baseStat[stat] == 20)
                         {
                             baseStatBonuses["meleeHit"] += 2;
                         }
@@ -523,7 +547,7 @@ namespace LinStats
                     }
                     else if (stat == "wis")
                     {
-                        baseStatBonuses["mr"] =  0;
+                        baseStatBonuses["mr"] = 0;
                         baseStatBonuses["mpRegen"] = 0;
 
                         if (baseStat[stat] >= 10)
@@ -766,7 +790,7 @@ namespace LinStats
                         {
                             baseStatBonuses["meleeHit"] += 1;
                         }
-                        if(baseStat[stat] == 16)
+                        if (baseStat[stat] == 16)
                         {
                             baseStatBonuses["weightCap"] += 2;
                         }
@@ -861,7 +885,7 @@ namespace LinStats
                         baseStatBonuses["hpPerLevel"] = 0;
                         baseStatBonuses["hpRegen"] = 0;
 
-                        if(baseStat["str"] >= 16)
+                        if (baseStat["str"] >= 16)
                         {
                             baseStatBonuses["weightCap"] = 2;
                         }
@@ -1079,7 +1103,7 @@ namespace LinStats
                         baseStatBonuses["weightCap"] = 0;
                         baseStatBonuses["meleeDamage"] = 0;
                         baseStatBonuses["meleeHit"] = 0;
-                        if(stat == "str")
+                        if (stat == "str")
                         {
                             if (baseStat["con"] >= 8)
                             {
@@ -1417,7 +1441,7 @@ namespace LinStats
                         {
                             baseStatBonuses["meleeDmg"] += 2;
                             baseStatBonuses["weightCap"] += 1;
-                        }              
+                        }
                     }
                     else if (stat == "dex")
                     {
@@ -1527,7 +1551,7 @@ namespace LinStats
                     }
                 }
             }
-            
+
 
             return;
         }
@@ -1576,7 +1600,7 @@ namespace LinStats
         }
 
         public class Knight : Character // constructor for Knight class
-        {            
+        {
             public Knight(String inputName)
             {
                 name = inputName;
@@ -1604,7 +1628,6 @@ namespace LinStats
                 maxBase["wis"] = 13;
                 maxBase["cha"] = 16;
 
-                baseHpPerLevel = 17;
                 baseMr = 0;
                 erFromLevel = 4;
                 maxHp = 2000;
@@ -1614,7 +1637,7 @@ namespace LinStats
 
         public class Wizard : Character //Constructor for Wizard class
         {
-            
+
             public Wizard(String inputName)
             {
                 name = inputName;
@@ -1642,7 +1665,6 @@ namespace LinStats
                 maxBase["wis"] = 18;
                 maxBase["cha"] = 18;
 
-                baseHpPerLevel = 7;
                 baseMr = 15;
                 erFromLevel = 10;
                 maxHp = 1000;
@@ -1652,7 +1674,7 @@ namespace LinStats
 
         public class Elf : Character //Constructor for Elf class
         {
-            
+
             public Elf(String inputName)
             {
                 name = inputName;
@@ -1680,7 +1702,6 @@ namespace LinStats
                 maxBase["wis"] = 18;
                 maxBase["cha"] = 16;
 
-                baseHpPerLevel = 10;
                 baseMr = 25;
                 erFromLevel = 8;
                 maxHp = 1400;
@@ -1717,7 +1738,6 @@ namespace LinStats
                 maxBase["wis"] = 18;
                 maxBase["cha"] = 18;
 
-                baseHpPerLevel = 11;
                 baseMr = 10;
                 erFromLevel = 8;
                 maxHp = 1400;
@@ -1755,7 +1775,6 @@ namespace LinStats
                 maxBase["wis"] = 18;
                 maxBase["cha"] = 18;
 
-                baseHpPerLevel = 10;
                 baseMr = 10;
                 erFromLevel = 6;
                 maxHp = 1400;
@@ -1792,7 +1811,6 @@ namespace LinStats
                 maxBase["wis"] = 18;
                 maxBase["cha"] = 18;
 
-                baseHpPerLevel = 9;
                 baseMr = 20;
                 erFromLevel = 9;
                 maxHp = 1200;
@@ -1829,7 +1847,6 @@ namespace LinStats
                 maxBase["wis"] = 18;
                 maxBase["cha"] = 14;
 
-                baseHpPerLevel = 12;
                 baseMr = 18;
                 erFromLevel = 7;
                 maxHp = 1800;
