@@ -538,11 +538,11 @@ namespace LinStats
             }
         }
 
-        public int GetWeightCap(int str, int con)
+        public int GetWeightCap(int str, int con, int bonus = 0)
         {
             int weightCap;
 
-            weightCap = ((str + con + 1) / 2) * 150;
+            weightCap = ((str + con + + bonus + 1) / 2) * 150;
 
             if (weightCap > 3600)
             {
@@ -597,6 +597,26 @@ namespace LinStats
             }
 
             return hpUp;
+        }
+
+        public int GetHpRegen(int con)
+        {
+            if (con >= 37)
+            {
+                return 25;
+            }
+            else if (con >= 13)
+            {
+                return (con - 13) + 1;
+            }
+            else if (con >= 8)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public BonusChart()

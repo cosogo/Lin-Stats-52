@@ -160,22 +160,7 @@ namespace LinStats
 
         public int GetWeightCap()
         {
-            /**
-             * 
-             * I am not using the function in the bonusChart because I will need to plug in more than one value.
-             * There was no immediately apparent way to calculate this within the bonusChart without including
-             * bonus values, which I wanted to avoid. bonusChart should stay completely independent of anything but
-             * base stats
-           */
-
-            int weightTotal = ((baseStat["str"] + baseStat["con"] + baseStatBonuses["weightCap"] + 1) / 2) * 150;
-
-            if (weightTotal > 3600)
-            {
-                weightTotal = 3600;
-            }
-
-            return weightTotal;
+            return statBonusChart.GetWeightCap(baseStat["str"], baseStat["con"], baseStatBonuses["weightCap"]);
         }
 
         public int GetHpPerLevel()
@@ -195,7 +180,8 @@ namespace LinStats
         public int GetHpRegen()
         {
             return
-                CalcHpRegen() + baseStatBonuses["hpRegen"];
+                statBonusChart.GetHpRegen(baseStat["con"]) + 
+                baseStatBonuses["hpRegen"];
         }
 
         public int GetMagicCrit()
@@ -246,45 +232,6 @@ namespace LinStats
             {
                 baseStat["bon"]++;
                 elixirsUsed++;
-            }
-        }
-
-        public int CalcHpPerLevel()
-        {
-            int hpUp = 0;
-            Random rand = new Random();
-
-            if (baseStat["con"] >= 40)
-            {
-                hpUp = 25;
-            }
-            else if (baseStat["con"] > 15)
-            {
-                hpUp = (baseStat["con"] - 15);
-            }
-
-            hpUp += rand.Next(0, 3) + baseHpPerLevel;
-
-            return hpUp;
-        }
-
-        public int CalcHpRegen()
-        {
-            if (baseStat["con"] >= 37)
-            {
-                return 25;
-            }
-            else if (baseStat["con"] >= 13)
-            {
-                return (baseStat["con"] - 13) + 1;
-            }
-            else if (baseStat["con"] >= 8)
-            {
-                return 1;
-            }
-            else
-            {
-                return 0;
             }
         }
 
