@@ -682,7 +682,7 @@ namespace LinStats
             erChart[57] = 25;
             erChart[58] = 25;
             erChart[59] = 26;
-            erChart[60] = 25;
+            erChart[60] = 26;
 
             //MP DISCOUNT (row = int, col = magic level
             mpDiscountChart = new int[16, 10] {

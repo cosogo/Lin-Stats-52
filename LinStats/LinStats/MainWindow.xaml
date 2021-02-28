@@ -24,8 +24,6 @@
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
                     <MenuItem Name="New" Header="New" Click="New_Click"/>
-                    <MenuItem Name="Import" Header="Import"/>
-                    <MenuItem Name="Header" Header="Export"/>
                     <MenuItem Name="Exit" Header="Exit" Click="Exit_Click"/>
                 </MenuItem>
                 <MenuItem Header="_Help">
