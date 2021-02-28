@@ -8,4 +8,4 @@ This project started as a C# and modularization exercise, but I think it has bec
 
 ## How
 
-C# + XAMP
+C# + WPF
