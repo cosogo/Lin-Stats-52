@@ -9,3 +9,7 @@ This project started as a C# and modularization exercise, but I think it has bec
 ## How
 
 C# + WPF
+
+## Notes
+
+I've documented the formulas used for all the stats here: https://docs.google.com/document/d/1Pc7ZKP3d3EN5w_RgMLGiW56fTttJRHIS2okYEeBDgwY/edit?usp=sharing
