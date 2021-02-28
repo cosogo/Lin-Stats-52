@@ -601,21 +601,32 @@ namespace LinStats
 
         public int GetHpRegen(int con)
         {
-            if (con >= 37)
-            {
-                return 25;
-            }
-            else if (con >= 13)
-            {
-                return (con - 13) + 1;
-            }
-            else if (con >= 8)
+            if(con > 14)
             {
                 return 1;
+            } 
+            else if (con >= 14 && con <= 25)
+            {
+                return con - 12;
             }
+
+            return 14;
+
+        }
+
+        public int GetMpRegen(int wis)
+        {
+            if(wis < 15)
+            {
+                return 1;
+            } 
+            else if (wis == 15 || wis == 16)
+            {
+                return 2;
+            } 
             else
             {
-                return 0;
+                return 3;
             }
         }
 
