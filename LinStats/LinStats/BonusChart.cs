@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 using System.Windows.Markup;
 
 /**
+* This class handles all of the stat bonus calculation. Each function calculates a different stat bonus and specifies which stats it needs
+* to calculate it with its arguements. 
+* 
+* Many stat calculations refer a chart. These values seemed arbitrary at the time as they are mostly break point based.
+* 
+* All classes are represented by numbers to avoid string comparisons which are prone to typos.
+* 
 * role variable: 
 * 1 = royal, 
 * 2 = elf, 
@@ -31,13 +38,15 @@ namespace LinStats
 
         public int GetEr(int dex, int role, int level)
         {
+            // Returns ER based on dex, class and level
+
             int erPerLevel;
 
             if (dex < 0)
             {
                 dex = 0;
             }
-            else if (dex > 60)
+            else if (dex > 60) // max
             {
                 dex = 60;
             }
@@ -75,6 +84,8 @@ namespace LinStats
 
         public int GetMpDiscount(int magicLevel, int intelligence)
         {
+            // returns mp discount on spells based on magic level and int
+            // references a chart
             int effectiveInt = intelligence - 12;
             int effectiveMagicLevel = magicLevel - 1;
 
@@ -97,6 +108,8 @@ namespace LinStats
 
         public int GetDmgFromStr(int str)
         {
+            // returns dmg bonus from STR
+            // references a chart
             if (str < 0)
             {
                 str = 0;
@@ -111,6 +124,8 @@ namespace LinStats
 
         public int GetDmgFromDex(int dex)
         {
+            // returns dmg bonus from dex
+            // references a chart
             if (dex < 0)
             {
                 dex = 0;
@@ -125,6 +140,8 @@ namespace LinStats
 
         public int GetHitFromStr(int str)
         {
+            // returns hit bonus from str
+            // references a chart
             if (str < 0)
             {
                 str = 0;
@@ -139,6 +156,8 @@ namespace LinStats
 
         public int GetHitFromDex(int dex)
         {
+            // returns hit bonus from dex
+            // references a chart
             if (dex < 0)
             {
                 dex = 0;
@@ -153,10 +172,13 @@ namespace LinStats
 
         public int GetMr(int wis, int role, int level)
         {
+            // returns mr from wis, class, and level
+            // formula is base MR from class + mr from level + mr based on wis
+
             int mrFromRole = 0;
             int mrFromLevel = 0;
 
-            if (wis < 0)
+            if (wis < 0) // min / max values
             {
                 wis = 0;
             }
@@ -165,6 +187,7 @@ namespace LinStats
                 wis = 60;
             }
 
+            //MR based on class
             if (role == 1)
             {
                 mrFromRole = 10;
@@ -194,17 +217,22 @@ namespace LinStats
                 mrFromRole = 0;
             }
 
+            //mr based on level
             mrFromLevel = level / 2;
 
+            //mr from chart
             return mrChart[wis] + mrFromRole + mrFromLevel;
         }
 
         public int GetMpPerLevel(int wis, int role)
         {
+            // calculates mp gain per level.
+            // based on wis and role
+
             float mpGain;
             int finalMpGain = 0;
 
-            if (wis > 35)
+            if (wis > 35) // min / max values
             {
                 wis = 35;
             }
@@ -215,9 +243,9 @@ namespace LinStats
 
             Random rnd = new Random();
 
-            mpGain = rnd.Next(0, mpChart[wis, 0]) + 1 + mpChart[wis, 1];
+            mpGain = rnd.Next(0, mpChart[wis, 0]) + 1 + mpChart[wis, 1]; // random number + number based on wis
 
-            if (role == 1)
+            if (role == 1) // mp gain based on wis
             {
                 mpGain += wis >= 16 ? 1 : 0;
                 finalMpGain = (int)(mpGain);
@@ -257,6 +285,8 @@ namespace LinStats
 
         public int getMpRegen(int wis)
         {
+            // calculates mp regen based on wis
+
             if (wis < 14)
             {
                 return 0;
@@ -277,6 +307,9 @@ namespace LinStats
 
         public int GetHitFromDexStr(int dex, int str)
         {
+            // total hit is added from dex hit + str hit.
+            // this function just cleans up any calls by adding it for you
+
             return GetHitFromDex(dex) + GetHitFromStr(str);
         }
 
@@ -632,6 +665,8 @@ namespace LinStats
 
         public BonusChart()
         {
+            // these charts seem relatively abitrary. it is just the numbers used for the game.
+
             // ER FROM DEX
             erChart[0] = -1;
             erChart[1] = -1;

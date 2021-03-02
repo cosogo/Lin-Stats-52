@@ -16,6 +16,11 @@ using System.Windows.Shapes;
 using static LinStats.Character;
 using static LinStats.BonusChart;
 
+/**
+ * This class defines the character for the stat calculator. This class essentially handles storing and displaying the character data.
+ * Stat calculations are generally handles in a separate class (BonusChart) unless the values are dependent on something specific to the character.
+ */
+
 namespace LinStats
 {
     public abstract class Character
@@ -41,28 +46,282 @@ namespace LinStats
 
         public BonusChart statBonusChart = new BonusChart();
 
-        public Dictionary<string, int> baseStat = new Dictionary<string, int>()
+        public Dictionary<string, int> baseStat = new Dictionary<string, int>() // dict to hold the base stat values
         {
             {"str", 0 }, {"dex", 0 }, {"con", 0 }, {"int", 0 }, {"wis", 0 }, {"cha", 0 }, {"bon", 0}
         };
 
-        public Dictionary<string, int> maxBase = new Dictionary<string, int>()
+        public Dictionary<string, int> maxBase = new Dictionary<string, int>() // these get defined on character creation. they are the max values for stats assigned at creation
         {
             {"str", 0 }, {"dex", 0 }, {"con", 0 }, {"int", 0 }, {"wis", 0 }, {"cha", 0 }
         };
 
-        public Dictionary<string, int> minBase = new Dictionary<string, int>()
+        public Dictionary<string, int> minBase = new Dictionary<string, int>() // defines minimum stat values, 0 across the board
         {
             {"str", 0 }, {"dex", 0 }, {"con", 0 }, {"int", 0 }, {"wis", 0 }, {"cha", 0 }
         };
 
-        public Dictionary<string, int> baseStatBonuses = new Dictionary<string, int>()
+        public Dictionary<string, int> baseStatBonuses = new Dictionary<string, int>() // these are the bonuses from your base stats
         {
             { "hpRegen", 0}, { "sp", 0}, { "magicHit", 0}, { "mpDiscount", 0}, { "mpPerLevel", 0}, {"er", 0}, {"meleeDamage", 0}, {"meleeHit", 0}, {"rangedHit", 0},
             {"rangedDamage", 0}, { "mpRegen", 0},  { "mr", 0}, { "magicCrit", 0}, { "weightCap", 0}, {"ac", 0}, {"magicLevel", 0}, {"magicBonus", 0}, {"hpPerLevel", 0}
         };
 
-        public int GetRoleNumber()
+        public class Knight : Character // constructor for Knight class
+        {
+            public Knight(String inputName)
+            {
+                name = inputName;
+                role = "Knight";
+
+                baseStat["str"] = 16;
+                baseStat["int"] = 8;
+                baseStat["dex"] = 12;
+                baseStat["con"] = 14;
+                baseStat["wis"] = 9;
+                baseStat["cha"] = 12;
+                baseStat["bon"] = 4;
+
+                minBase["str"] = 16;
+                minBase["int"] = 8;
+                minBase["dex"] = 12;
+                minBase["con"] = 14;
+                minBase["wis"] = 9;
+                minBase["cha"] = 12;
+
+                maxBase["str"] = 20;
+                maxBase["int"] = 12;
+                maxBase["dex"] = 16;
+                maxBase["con"] = 18;
+                maxBase["wis"] = 13;
+                maxBase["cha"] = 16;
+
+                baseMr = 0;
+                erFromLevel = 4;
+                maxHp = 2000;
+                maxMp = 600;
+            }
+        }
+
+        public class Wizard : Character //Constructor for Wizard class
+        {
+
+            public Wizard(String inputName)
+            {
+                name = inputName;
+                role = "Wizard";
+
+                baseStat["str"] = 8;
+                baseStat["int"] = 12;
+                baseStat["dex"] = 7;
+                baseStat["con"] = 12;
+                baseStat["wis"] = 12;
+                baseStat["cha"] = 8;
+                baseStat["bon"] = 16;
+
+                minBase["str"] = 8;
+                minBase["int"] = 12;
+                minBase["dex"] = 7;
+                minBase["con"] = 12;
+                minBase["wis"] = 12;
+                minBase["cha"] = 8;
+
+                maxBase["str"] = 20;
+                maxBase["int"] = 18;
+                maxBase["dex"] = 18;
+                maxBase["con"] = 18;
+                maxBase["wis"] = 18;
+                maxBase["cha"] = 18;
+
+                baseMr = 15;
+                erFromLevel = 10;
+                maxHp = 1000;
+                maxMp = 1200;
+            }
+        }
+
+        public class Elf : Character //Constructor for Elf class
+        {
+
+            public Elf(String inputName)
+            {
+                name = inputName;
+                role = "Elf";
+
+                baseStat["str"] = 11;
+                baseStat["int"] = 12;
+                baseStat["dex"] = 12;
+                baseStat["con"] = 12;
+                baseStat["wis"] = 12;
+                baseStat["cha"] = 9;
+                baseStat["bon"] = 7;
+
+                minBase["str"] = 11;
+                minBase["int"] = 12;
+                minBase["dex"] = 12;
+                minBase["con"] = 12;
+                minBase["wis"] = 12;
+                minBase["cha"] = 9;
+
+                maxBase["str"] = 18;
+                maxBase["int"] = 18;
+                maxBase["dex"] = 18;
+                maxBase["con"] = 18;
+                maxBase["wis"] = 18;
+                maxBase["cha"] = 16;
+
+                baseMr = 25;
+                erFromLevel = 8;
+                maxHp = 1400;
+                maxMp = 900;
+            }
+        }
+
+        public class Royal : Character //Constructor for Royal class
+        {
+            public Royal(String inputName)
+            {
+                name = inputName;
+                role = "Royal";
+
+                baseStat["str"] = 13;
+                baseStat["int"] = 10;
+                baseStat["dex"] = 10;
+                baseStat["con"] = 10;
+                baseStat["wis"] = 11;
+                baseStat["cha"] = 13;
+                baseStat["bon"] = 8;
+
+                minBase["str"] = 13;
+                minBase["int"] = 10;
+                minBase["dex"] = 10;
+                minBase["con"] = 10;
+                minBase["wis"] = 11;
+                minBase["cha"] = 13;
+
+                maxBase["str"] = 20;
+                maxBase["int"] = 18;
+                maxBase["dex"] = 18;
+                maxBase["con"] = 18;
+                maxBase["wis"] = 18;
+                maxBase["cha"] = 18;
+
+                baseMr = 10;
+                erFromLevel = 8;
+                maxHp = 1400;
+                maxMp = 800;
+            }
+        }
+
+        public class DarkElf : Character //Constructor for DarkElf class
+        {
+            public DarkElf(String inputName)
+            {
+                name = inputName;
+                role = "Dark Elf";
+
+
+                baseStat["str"] = 12;
+                baseStat["int"] = 11;
+                baseStat["dex"] = 15;
+                baseStat["con"] = 8;
+                baseStat["wis"] = 10;
+                baseStat["cha"] = 10;
+                baseStat["bon"] = 10;
+
+                minBase["str"] = 12;
+                minBase["int"] = 11;
+                minBase["dex"] = 15;
+                minBase["con"] = 8;
+                minBase["wis"] = 10;
+                minBase["cha"] = 10;
+
+                maxBase["str"] = 18;
+                maxBase["int"] = 18;
+                maxBase["dex"] = 18;
+                maxBase["con"] = 18;
+                maxBase["wis"] = 18;
+                maxBase["cha"] = 18;
+
+                baseMr = 10;
+                erFromLevel = 6;
+                maxHp = 1400;
+                maxMp = 900;
+            }
+        }
+
+        public class Illusionist : Character //Constructor for Illusionist class
+        {
+            public Illusionist(String inputName)
+            {
+                name = inputName;
+                role = "Illusionist";
+
+                baseStat["str"] = 11;
+                baseStat["int"] = 12;
+                baseStat["dex"] = 10;
+                baseStat["con"] = 12;
+                baseStat["wis"] = 12;
+                baseStat["cha"] = 8;
+                baseStat["bon"] = 10;
+
+                minBase["str"] = 11;
+                minBase["int"] = 12;
+                minBase["dex"] = 10;
+                minBase["con"] = 12;
+                minBase["wis"] = 12;
+                minBase["cha"] = 8;
+
+                maxBase["str"] = 18;
+                maxBase["int"] = 18;
+                maxBase["dex"] = 18;
+                maxBase["con"] = 18;
+                maxBase["wis"] = 18;
+                maxBase["cha"] = 18;
+
+                baseMr = 20;
+                erFromLevel = 9;
+                maxHp = 1200;
+                maxMp = 1100;
+            }
+        }
+
+        public class DragonKnight : Character //Constructor for DragonKnight class
+        {
+            public DragonKnight(String inputName)
+            {
+                name = inputName;
+                role = "Dragon Knight";
+
+                baseStat["str"] = 13;
+                baseStat["int"] = 11;
+                baseStat["dex"] = 11;
+                baseStat["con"] = 14;
+                baseStat["wis"] = 12;
+                baseStat["cha"] = 8;
+                baseStat["bon"] = 6;
+
+                minBase["str"] = 13;
+                minBase["int"] = 11;
+                minBase["dex"] = 11;
+                minBase["con"] = 14;
+                minBase["wis"] = 12;
+                minBase["cha"] = 8;
+
+                maxBase["str"] = 18;
+                maxBase["int"] = 17;
+                maxBase["dex"] = 17;
+                maxBase["con"] = 18;
+                maxBase["wis"] = 18;
+                maxBase["cha"] = 14;
+
+                baseMr = 18;
+                erFromLevel = 7;
+                maxHp = 1800;
+            }
+        }
+
+        public int GetRoleNumber() // turns role into a number value to be used with the bonusChart class
         {
             if (role == "Royal")
             {
@@ -226,7 +485,7 @@ namespace LinStats
                 baseStatBonuses["sp"] + GetMagicBonus() + GetMagicLevel();
         }
 
-        public void UseElixir()
+        public void UseElixir() // elixir use. only 5 elixirs are allowed
         {
             if (elixirsUsed < 5)
             {
@@ -237,8 +496,8 @@ namespace LinStats
 
         public void RaiseStat(string stat, string dir)
         {
-            if (initialStatsAllocated == false)
-            {
+            if (initialStatsAllocated == false) // if you are assigning base stats the max stat values are checked before assigning
+            { 
                 if (dir == "plus")
                 {
                     if (baseStat["bon"] > 0 && baseStat[stat] < maxBase[stat])
@@ -257,7 +516,7 @@ namespace LinStats
                 }
                 StatBonusCalc(stat);
             }
-            else if (dir == "plus")
+            else if (dir == "plus") // max base stat balues are not applied. only the global max stat value is (25)
             {
                 if (baseStat["bon"] >= 1 && baseStat[stat] < 25)
                 {
@@ -269,7 +528,7 @@ namespace LinStats
 
         public void LevelUp()
         {
-            if (level == 1)
+            if (level == 1) // initial stat generation. these values are not set based on stats but based on the class you are
             {
                 if (role == "Knight")
                 {
@@ -371,7 +630,7 @@ namespace LinStats
                     }
                 }
             }
-            else
+            else // once the character is created, it starts calculating hp and mp based on stats
             {
                 hp += GetHpPerLevel();
                 mp += GetMpPerLevel();
@@ -387,7 +646,7 @@ namespace LinStats
                 mp = maxMp;
             }
 
-            if (highestLevel == level && level >= 50)
+            if (highestLevel == level && level >= 50) // if you delevel and relevel, this stops you from getting bonus stats on the relevels
             {
                 baseStat["bon"] += 1;
             }
@@ -420,7 +679,7 @@ namespace LinStats
             }
         }
 
-        public void StatBonusCalc(string stat)
+        public void StatBonusCalc(string stat) // numbers seem a bit arbitrary here. they are based on break points reaached during initial stat allocation for certain bonuses.
         {
             if (initialStatsAllocated == false)
             {
@@ -1544,260 +1803,6 @@ namespace LinStats
 
 
             return outputText;
-        }
-
-        public class Knight : Character // constructor for Knight class
-        {
-            public Knight(String inputName)
-            {
-                name = inputName;
-                role = "Knight";
-
-                baseStat["str"] = 16;
-                baseStat["int"] = 8;
-                baseStat["dex"] = 12;
-                baseStat["con"] = 14;
-                baseStat["wis"] = 9;
-                baseStat["cha"] = 12;
-                baseStat["bon"] = 4;
-
-                minBase["str"] = 16;
-                minBase["int"] = 8;
-                minBase["dex"] = 12;
-                minBase["con"] = 14;
-                minBase["wis"] = 9;
-                minBase["cha"] = 12;
-
-                maxBase["str"] = 20;
-                maxBase["int"] = 12;
-                maxBase["dex"] = 16;
-                maxBase["con"] = 18;
-                maxBase["wis"] = 13;
-                maxBase["cha"] = 16;
-
-                baseMr = 0;
-                erFromLevel = 4;
-                maxHp = 2000;
-                maxMp = 600;
-            }
-        }
-
-        public class Wizard : Character //Constructor for Wizard class
-        {
-
-            public Wizard(String inputName)
-            {
-                name = inputName;
-                role = "Wizard";
-
-                baseStat["str"] = 8;
-                baseStat["int"] = 12;
-                baseStat["dex"] = 7;
-                baseStat["con"] = 12;
-                baseStat["wis"] = 12;
-                baseStat["cha"] = 8;
-                baseStat["bon"] = 16;
-
-                minBase["str"] = 8;
-                minBase["int"] = 12;
-                minBase["dex"] = 7;
-                minBase["con"] = 12;
-                minBase["wis"] = 12;
-                minBase["cha"] = 8;
-
-                maxBase["str"] = 20;
-                maxBase["int"] = 18;
-                maxBase["dex"] = 18;
-                maxBase["con"] = 18;
-                maxBase["wis"] = 18;
-                maxBase["cha"] = 18;
-
-                baseMr = 15;
-                erFromLevel = 10;
-                maxHp = 1000;
-                maxMp = 1200;
-            }
-        }
-
-        public class Elf : Character //Constructor for Elf class
-        {
-
-            public Elf(String inputName)
-            {
-                name = inputName;
-                role = "Elf";
-
-                baseStat["str"] = 11;
-                baseStat["int"] = 12;
-                baseStat["dex"] = 12;
-                baseStat["con"] = 12;
-                baseStat["wis"] = 12;
-                baseStat["cha"] = 9;
-                baseStat["bon"] = 7;
-
-                minBase["str"] = 11;
-                minBase["int"] = 12;
-                minBase["dex"] = 12;
-                minBase["con"] = 12;
-                minBase["wis"] = 12;
-                minBase["cha"] = 9;
-
-                maxBase["str"] = 18;
-                maxBase["int"] = 18;
-                maxBase["dex"] = 18;
-                maxBase["con"] = 18;
-                maxBase["wis"] = 18;
-                maxBase["cha"] = 16;
-
-                baseMr = 25;
-                erFromLevel = 8;
-                maxHp = 1400;
-                maxMp = 900;
-            }
-        }
-
-        public class Royal : Character //Constructor for Royal class
-        {
-            public Royal(String inputName)
-            {
-                name = inputName;
-                role = "Royal";
-
-                baseStat["str"] = 13;
-                baseStat["int"] = 10;
-                baseStat["dex"] = 10;
-                baseStat["con"] = 10;
-                baseStat["wis"] = 11;
-                baseStat["cha"] = 13;
-                baseStat["bon"] = 8;
-
-                minBase["str"] = 13;
-                minBase["int"] = 10;
-                minBase["dex"] = 10;
-                minBase["con"] = 10;
-                minBase["wis"] = 11;
-                minBase["cha"] = 13;
-
-                maxBase["str"] = 20;
-                maxBase["int"] = 18;
-                maxBase["dex"] = 18;
-                maxBase["con"] = 18;
-                maxBase["wis"] = 18;
-                maxBase["cha"] = 18;
-
-                baseMr = 10;
-                erFromLevel = 8;
-                maxHp = 1400;
-                maxMp = 800;
-            }
-        }
-
-        public class DarkElf : Character //Constructor for DarkElf class
-        {
-            public DarkElf(String inputName)
-            {
-                name = inputName;
-                role = "Dark Elf";
-
-
-                baseStat["str"] = 12;
-                baseStat["int"] = 11;
-                baseStat["dex"] = 15;
-                baseStat["con"] = 8;
-                baseStat["wis"] = 10;
-                baseStat["cha"] = 10;
-                baseStat["bon"] = 10;
-
-                minBase["str"] = 12;
-                minBase["int"] = 11;
-                minBase["dex"] = 15;
-                minBase["con"] = 8;
-                minBase["wis"] = 10;
-                minBase["cha"] = 10;
-
-                maxBase["str"] = 18;
-                maxBase["int"] = 18;
-                maxBase["dex"] = 18;
-                maxBase["con"] = 18;
-                maxBase["wis"] = 18;
-                maxBase["cha"] = 18;
-
-                baseMr = 10;
-                erFromLevel = 6;
-                maxHp = 1400;
-                maxMp = 900;
-            }
-        }
-
-        public class Illusionist : Character //Constructor for Illusionist class
-        {
-            public Illusionist(String inputName)
-            {
-                name = inputName;
-                role = "Illusionist";
-
-                baseStat["str"] = 11;
-                baseStat["int"] = 12;
-                baseStat["dex"] = 10;
-                baseStat["con"] = 12;
-                baseStat["wis"] = 12;
-                baseStat["cha"] = 8;
-                baseStat["bon"] = 10;
-
-                minBase["str"] = 11;
-                minBase["int"] = 12;
-                minBase["dex"] = 10;
-                minBase["con"] = 12;
-                minBase["wis"] = 12;
-                minBase["cha"] = 8;
-
-                maxBase["str"] = 18;
-                maxBase["int"] = 18;
-                maxBase["dex"] = 18;
-                maxBase["con"] = 18;
-                maxBase["wis"] = 18;
-                maxBase["cha"] = 18;
-
-                baseMr = 20;
-                erFromLevel = 9;
-                maxHp = 1200;
-                maxMp = 1100;
-            }
-        }
-
-        public class DragonKnight : Character //Constructor for DragonKnight class
-        {
-            public DragonKnight(String inputName)
-            {
-                name = inputName;
-                role = "Dragon Knight";
-
-                baseStat["str"] = 13;
-                baseStat["int"] = 11;
-                baseStat["dex"] = 11;
-                baseStat["con"] = 14;
-                baseStat["wis"] = 12;
-                baseStat["cha"] = 8;
-                baseStat["bon"] = 6;
-
-                minBase["str"] = 13;
-                minBase["int"] = 11;
-                minBase["dex"] = 11;
-                minBase["con"] = 14;
-                minBase["wis"] = 12;
-                minBase["cha"] = 8;
-
-                maxBase["str"] = 18;
-                maxBase["int"] = 17;
-                maxBase["dex"] = 17;
-                maxBase["con"] = 18;
-                maxBase["wis"] = 18;
-                maxBase["cha"] = 14;
-
-                baseMr = 18;
-                erFromLevel = 7;
-                maxHp = 1800;
-            }
         }
     }
 
